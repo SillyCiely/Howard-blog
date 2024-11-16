@@ -4,11 +4,6 @@ const mongoose = require('mongoose')
 const usersSchema = require('./users-schema.js')
 
 // schema: id, username, email, password, role
-
-const generateID = () => {
-    return Math.random().toString().substring(2)
-}
-
 const matchEmail = async (emailEntered) => {
 const Users = mongoose.model('Users', usersSchema)
     return Users.findOne({email: emailEntered});
@@ -52,7 +47,6 @@ const getUser = async (request) => {
 
 module.exports = {
     getUser,
-    findUserWithPassword: matchCredentials,
+    matchCredentials,
     logout,
-    generateID,
 }
