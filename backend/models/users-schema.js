@@ -26,6 +26,10 @@ const usersSchema = new mongoose.Schema({
         type: String,
         // e.g. 'password123'
     },
+    flare: {
+        type: String,
+        // e.g. 'med student', 'resident', 'surgeon'
+    },
     role: {
         required: true,
         type: String,
