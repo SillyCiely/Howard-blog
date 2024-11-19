@@ -11,6 +11,7 @@ const usersSchema = new mongoose.Schema({
     },
     username: {
         required: true,
+        unique: true,
         type: String,
         // e.g. 'Luna', 'Howard'
     },
