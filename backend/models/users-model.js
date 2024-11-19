@@ -24,6 +24,17 @@ const matchCredentials = async (emailEntered, passwordEntered) => {
     return null;
 }
 
+// set token (attach user email and id to token)
+const setToken = (req, userEmail, userId) => {
+    req.session.token = jwt.sign(
+        {
+            email: userEmail,
+            id: userId,
+        },
+        process.env.JWT_SECRET
+    )
+}
+
 // logout = clear session
 const logout = (request) => {
     request.session = null
@@ -48,5 +59,6 @@ const getUser = async (request) => {
 module.exports = {
     getUser,
     matchCredentials,
-    logout,
+    setToken,
+    logout
 }
