@@ -3,14 +3,13 @@ var router = express.Router()
 
 // user data
 // const jwt = require('jsonwebtoken')
-const authenticateUser = require('../middleware/authenticateUser.js')
-const {Users} = require('../models/users-model.js')
+const authenticateUser = require('../middleware/authenticateUser')
+const {Users} = require('../models/users-schema')
 
 // import blogpost model
-const Post = require('../models/blogposts-schema.js')
-const PostModel = require('../models/blogposts-model.js')
-const postTestData = require('../models/test-data/blogposts-testdata.js')
-const {generateID} = require('../models/utils.js')
+const Post = require('../models/blogposts-schema')
+const postTestData = require('../models/test-data/blogposts-testdata')
+const {generateID} = require('../models/utils')
 
 // multer middleware for file uploads
 const multer = require('multer')
@@ -184,6 +183,22 @@ router.delete('/posts/:postId/delete', authenticateUser, async (req, res) => {
         }
     } catch (error) {
         console.error('Error deleting post', error)
+        res.status(500).send('Error')
+    }
+})
+
+/* ----------------------------------- */
+/*          POPULATE TEST DATA         */
+/* ----------------------------------- */
+
+// populate test data
+router.post('/posts/populate-test-data', async (req, res) => {
+    try {
+        await Post.deleteMany({})
+        await Post.insertMany(postTestData)
+        res.status(201).send('Test data populated')
+    } catch (error) {
+        console.error('Error populating test data', error)
         res.status(500).send('Error')
     }
 })
