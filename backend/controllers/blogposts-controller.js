@@ -95,15 +95,20 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
     try {
         const post = await Post.findOne({ postId: req.params.postId })
+
+        if (!post) {
+            return res.status(404).send('Post not found')
+        }
+
         if (post.authorId === req.user.userId || req.user.role === 'admin') {
             await Post.updateOne({ postId: req.params.postId }, req.body)
-            res.status(200).send('Post updated')
+            res.status(200).send('Post updated successfully')
         } else {
             res.status(403).send('Unauthorized')
         }
     } catch (error) {
         console.error('Error updating post', error)
-        res.status(500).send('Error')
+        res.status(500).send('Error updating post')
     }
 }
 
@@ -127,9 +132,14 @@ const likePost = async (req, res) => {
 const deletePost = async (req, res) => {
     try {
         const post = await Post.findOne({ postId: req.params.postId })
+
+        if (!post) {
+            return res.status(404).send('Post not found')
+        }
+
         if (post.authorId === req.user.userId || req.user.role === 'admin') {
             await Post.deleteOne({ postId: req.params.postId })
-            res.status(200).send('Post deleted')
+            res.status(200).send('Post deleted successfully')
         } else {
             res.status(403).send('Unauthorized')
         }
