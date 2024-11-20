@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const {
-    getCommentsByUserId,
     getCommentById,
     getCommentsByPostId,
+    getCommentsByUserId,
     createComment,
     updateComment,
+    likeComment,
     deleteComment,
     populateTestData
 } = require('../controllers/comments-controller')
@@ -21,6 +22,7 @@ router.get('/users/:userId/comments', getCommentsByUserId)
 
 // POST REQUESTS
 router.post('/comments/new', authenticateUser, upload.single('commentImage'), createComment)
+router.post('/comments/:commentID/like', authenticateUser, likeComment)
 
 // PUT REQUESTS
 router.put('comments/:commentID/update', authenticateUser, updateComment)
