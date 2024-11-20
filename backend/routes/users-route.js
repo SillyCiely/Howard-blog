@@ -25,7 +25,7 @@ router.post('/login', loginUser);
 router.post('/logout', logoutUser);
 
 // PUT REQUESTS
-router.put('/update/:userId', authenticateUser, updateUser);
+router.put('/users/:userId/update', authenticateUser, updateUser);
 
 // DELETE REQUESTS
 /* users should not be "deleted" for audit purposes (?)
