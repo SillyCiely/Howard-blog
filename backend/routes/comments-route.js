@@ -1,11 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const {
-    populateTestData,
     getCommentsByUserId,
+    getCommentById,
+    getCommentsByPostId,
     createComment,
     updateComment,
     deleteComment,
+    populateTestData
 } = require('../controllers/comments-controller')
 const { authenticateUser } = require('../middleware/authenticateUser')
 const multer = require('multer')
@@ -13,6 +15,8 @@ const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
 // GET REQUESTS
+router.get('/comments/:commentID', getCommentById)
+router.get('/posts/:postId/comments', getCommentsByPostId)
 router.get('/users/:userId/comments', getCommentsByUserId)
 
 // POST REQUESTS
