@@ -1,0 +1,7 @@
+// Populate MondoDB with test data
+
+#POST http://localhost:3000/posts/populate-test-data
+
+#POST http://localhost:3000/comments/populate-test-data
+
+POST http://localhost:3000/users/populate-test-data

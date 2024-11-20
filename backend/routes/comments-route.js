@@ -20,15 +20,15 @@ router.get('/comments/:commentID', getCommentById)
 router.get('/posts/:postId/comments', getCommentsByPostId)
 router.get('/users/:userId/comments', getCommentsByUserId)
 
-// POST REQUESTS
-router.post('/comments/new', authenticateUser, upload.single('commentImage'), createComment)
-router.post('/comments/:commentID/like', authenticateUser, likeComment)
-
-// PUT REQUESTS
-router.put('comments/:commentID/update', authenticateUser, updateComment)
-
-// DELETE REQUESTS
-router.delete('comments/:commentID/delete', authenticateUser, deleteComment)
+// // POST REQUESTS
+// router.post('/comments/new', authenticateUser, upload.single('commentImage'), createComment)
+// router.post('/comments/:commentID/like', authenticateUser, likeComment)
+//
+// // PUT REQUESTS
+// router.put('/comments/:commentID/update', authenticateUser, updateComment)
+//
+// // DELETE REQUESTS
+// router.delete('/comments/:commentID/delete', authenticateUser, deleteComment)
 
 // POPULATE TEST DATA
 router.post('/comments/populate-test-data', populateTestData)

@@ -1,4 +1,4 @@
-const { Users } = require('../models/users-schema');
+const User = require('../models/users-schema');
 const { setToken, matchCredentials, logout } = require('../models/users-model');
 const userTestData = require('../models/test-data/users-testdata');
 const { generateID } = require('../models/utils');
@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res) => {
     try {
-        const users = await Users.find();
+        const users = await User.find();
         res.json(users);
     } catch (error) {
         console.error('Error fetching users: ', error);
@@ -17,7 +17,7 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
     try {
-        const user = await Users.findOne({ id: req.params.userId });
+        const user = await User.findOne({ id: req.params.userId });
         if (user) {
             res.json(user);
         } else {
@@ -46,7 +46,7 @@ const registerUser = async (req, res) => {
         const userId = generateID();
         const hashedPassword = await bcrypt.hash(req.body.userPassword, 10);
 
-        const user = await Users.create({
+        const user = await User.create({
             id: userId,
             name: req.body.userName,
             email: req.body.userEmail,
@@ -116,7 +116,7 @@ const updateUser = async (req, res) => {
     console.log('user update ', req.body);
 
     try {
-        let user = await Users.findOne({ id: userId });
+        let user = await User.findOne({ id: userId });
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -134,7 +134,7 @@ const updateUser = async (req, res) => {
                 : res.status(403).send('Current password is incorrect, please try again')
             : user.password;
 
-        user = await Users.findOneAndUpdate({ id: userId }, updateData, { new: true });
+        user = await User.findOneAndUpdate({ id: userId }, updateData, { new: true });
 
         setToken(req, user.email, user.id);
         console.log('User session', req.session);
@@ -148,12 +148,12 @@ const updateUser = async (req, res) => {
 
 const populateTestData = async (req, res) => {
     try {
-        await Users.deleteMany({});
+        await User.deleteMany({});
         const hashedUsers = await Promise.all(userTestData.map(async (user) => {
             user.password = await hash(user.password, 10);
             return user;
         }));
-        await Users.insertMany(hashedUsers);
+        await User.insertMany(hashedUsers);
         console.log('populated users');
         res.redirect('/');
     } catch (error) {

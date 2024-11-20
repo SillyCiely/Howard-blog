@@ -70,7 +70,7 @@ const createComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
     try {
-        const comment = await Comment.findOne({ commentID })
+        const comment = await Comment.findOne({ commentId: req.params.commentId })
 
         if (!comment) {
             return res.status(404).send('Comment not found')
@@ -142,6 +142,7 @@ module.exports = {
     getCommentsByUserId,
     createComment,
     updateComment,
+    likeComment,
     deleteComment,
     populateTestData,
 }
