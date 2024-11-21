@@ -4,13 +4,14 @@ const mongoose = require('mongoose')
 
 // user schema: id, username, email, password, role
 const usersSchema = new mongoose.Schema({
-    id: {
+    userId: {
         required: true,
         type: String,
         // e.g. '1', '2', '3'
     },
     username: {
         required: true,
+        unique: true,
         type: String,
         // e.g. 'Luna', 'Howard'
     },
@@ -24,6 +25,10 @@ const usersSchema = new mongoose.Schema({
         required: true,
         type: String,
         // e.g. 'password123'
+    },
+    flare: {
+        type: String,
+        // e.g. 'med student', 'resident', 'surgeon'
     },
     role: {
         required: true,

@@ -4,11 +4,6 @@ const mongoose = require('mongoose')
 const usersSchema = require('./users-schema.js')
 
 // schema: id, username, email, password, role
-
-const generateID = () => {
-    return Math.random().toString().substring(2)
-}
-
 const matchEmail = async (emailEntered) => {
 const Users = mongoose.model('Users', usersSchema)
     return Users.findOne({email: emailEntered});
@@ -27,6 +22,17 @@ const matchCredentials = async (emailEntered, passwordEntered) => {
 
     // incorrect password or no user found
     return null;
+}
+
+// set token (attach user email and id to token)
+const setToken = (req, userEmail, userId) => {
+    req.session.token = jwt.sign(
+        {
+            email: userEmail,
+            id: userId,
+        },
+        process.env.JWT_SECRET
+    )
 }
 
 // logout = clear session
@@ -52,7 +58,7 @@ const getUser = async (request) => {
 
 module.exports = {
     getUser,
-    findUserWithPassword: matchCredentials,
-    logout,
-    generateID,
+    matchCredentials,
+    setToken,
+    logout
 }
