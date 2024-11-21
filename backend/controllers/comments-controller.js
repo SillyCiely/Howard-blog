@@ -1,8 +1,7 @@
 const Comment = require('../models/comments-schema')
 const { Users } = require('../models/users-schema')
+let { generateID } = require('../models/utils')
 const commentsTestData = require('../models/test-data/comments-testdata')
-var { generateID } = require('../models/users-model')
-const Post = require("../models/blogposts-schema");
 
 const getCommentById = async (req, res) => {
     try {
@@ -48,20 +47,19 @@ const getCommentsByUserId = async (req, res) => {
 
 const createComment = async (req, res) => {
     try {
+        console.log('Request body:', req.body)
+        console.log('Request user:', req.user)
+
         const newComment = await Comment.create({
             commentId: generateID(),
             postID: req.body.postId,
             commenterId: req.user.userId,
-            commentBody: req.body.commentBody,
-            // comments do not support images
-            // todo: potential for image attachments?
-            //  needs schema update...
+            commentBody: req.body.commentBody
+            // todo: potential for image attachments? -- needs schema update...
             // image: req.file.buffer,
             // imageMimeType: req.file.mimetype,
-            likes: 0,
-            usersLikes: [],
         })
-        res.status(201).json(newComment)
+        res.status(201).send('Comment created')
     } catch (error) {
         console.error('Error creating comment: ', error)
         res.status(500).send('Error creating comment')

@@ -1,7 +1,7 @@
 const Post = require('../models/blogposts-schema')
 const { Users } = require('../models/users-schema')
+let { generateID } = require('../models/utils')
 const postTestData = require('../models/test-data/blogposts-testdata')
-const { generateID } = require('../models/utils')
 
 const getAllPosts = async (req, res) => {
     try {
@@ -82,12 +82,10 @@ const createPost = async (req, res) => {
             postBody: req.body.postBody,
             image: req.file.buffer,
             imageMimeType: req.file.mimetype,
-            likes: 0,
-            usersLikes: [],
         })
         res.status(201).send('Post created')
     } catch (error) {
-        console.error('Error creating post', error)
+        console.error('Error creating post: ', error)
         res.status(500).send('Error')
     }
 }
