@@ -1,0 +1,15 @@
+:root {
+    background-color: var(--tint);
+}
+
+.flex-row-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-col-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
