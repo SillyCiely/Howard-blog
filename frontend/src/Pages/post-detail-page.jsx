@@ -1,7 +1,7 @@
 const PostDetailPage = () => {
     return (
         <div>
-            <h1>Login Page</h1>
+            <h1>Post Detail Page</h1>
         </div>
     )
 }
