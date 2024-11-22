@@ -6,10 +6,27 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .flex-col-container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.box-container {
+    gap: 2em;
+    padding: 1em;
+    border-radius: 10px;
+    background-color: ghostwhite;
+    border: var(--dark) solid 3px;
+}
+
+/* convert flex-row to flex-col under 768px*/
+@media (max-width: 768px) {
+    .flex-row-container {
+        flex-direction: column;
+    }
 }
