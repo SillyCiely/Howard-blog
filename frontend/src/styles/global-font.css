@@ -5,6 +5,24 @@
     color: var(--grey);
 }
 
+h1 {
+    font-size: 2.5em;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+h3 {
+    font-family: "Playfair Display", serif;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-style: italic;
+}
+
 a {
     text-decoration: none;
 }
