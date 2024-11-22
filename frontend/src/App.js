@@ -1,15 +1,15 @@
 import { useContext, Fragment } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AuthContext, AuthContextProvider } from './Utils/auth-context.jsx'
-import './Styles/App.css'
-import Navigation from './Components/navigation.jsx'
-import HomePage from "./Pages/home-page";
-import RegisterPage from "./Pages/register-page";
-import LoginPage from "./Pages/login-page";
-import PostListPage from "./Pages/post-page-list";
-import PostDetailPage from "./Pages/post-detail-page";
-import UserProfilePage from "./Pages/user-profile-page";
-import CreatePostPage from "./Pages/create-post-page";
+import { AuthContext, AuthContextProvider } from './utils/auth-context.jsx'
+import './styles/app.css'
+import Navigation from './components/navigation.jsx'
+import HomePage from "./pages/home-page";
+import RegisterPage from "./pages/register-page";
+import LoginPage from "./pages/login-page";
+import PostListPage from "./pages/post-page-list";
+import PostDetailPage from "./pages/post-detail-page";
+import UserProfilePage from "./pages/user-profile-page";
+import CreatePostPage from "./pages/create-post-page";
 
 const App = () => {
   const {user} = useContext(AuthContext)

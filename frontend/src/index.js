@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './Styles/global-variables.css';
-import './Styles/global-font.css';
-import './Styles/global-format.css';
+import './styles/global-variables.css';
+import './styles/global-font.css';
+import './styles/global-format.css';
 import App from './App';
-import reportWebVitals from './Utils/reportWebVitals';
+import reportWebVitals from './utils/reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

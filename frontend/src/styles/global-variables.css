@@ -1,4 +1,9 @@
 :root {
+  /* page background */
+  --placeholder-background-variable: var(--tint);
+  --placeholder-bg: url("../media/placeholder-bg.png");
+
+  /* colours */
   --lightgrey: #c6c6c6;
   --grey: #555555;
   --beige:#f8dec3;

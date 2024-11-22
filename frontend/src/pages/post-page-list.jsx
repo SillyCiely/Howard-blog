@@ -1,8 +1,10 @@
+import PageTemplate from "../components/page-template";
+
 const PostListPage = () => {
     return (
-        <div>
+        <PageTemplate>
             <h1>Post List Page</h1>
-        </div>
+        </PageTemplate>
     )
 }
 
