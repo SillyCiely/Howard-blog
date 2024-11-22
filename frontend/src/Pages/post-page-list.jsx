@@ -1,9 +1,9 @@
-const PostPageList = () => {
+const PostListPage = () => {
     return (
         <div>
-            <h1>Home Page</h1>
+            <h1>Post List Page</h1>
         </div>
     )
 }
 
-export default PostPageList
+export default PostListPage
