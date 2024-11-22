@@ -1,8 +1,10 @@
+import PageTemplate from "../components/page-template";
+
 const UserProfilePage = () => {
     return (
-        <div>
+        <PageTemplate>
             <h1>User Profile Page</h1>
-        </div>
+        </PageTemplate>
     )
 }
 

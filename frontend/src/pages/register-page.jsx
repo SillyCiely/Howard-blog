@@ -1,8 +1,10 @@
+import PageTemplate from "../components/page-template";
+
 const RegisterPage = () => {
     return (
-        <div>
+        <PageTemplate>
             <h1>Register Page</h1>
-        </div>
+        </PageTemplate>
     )
 }
 

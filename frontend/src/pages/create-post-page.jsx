@@ -1,8 +1,10 @@
+import PageTemplate from "../components/page-template";
+
 const CreatePostPage = () => {
     return (
-        <div>
+        <PageTemplate>
             <h1>Create New Post Page</h1>
-        </div>
+        </PageTemplate>
     )
 }
 

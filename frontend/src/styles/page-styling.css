@@ -1,0 +1,15 @@
+/* setting the background image based on .page*/
+.page::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+
+    background-image: var(--placeholder-background-variable);
+    background-size: cover;
+}
+
+.page {
+    box-sizing: border-box;
+    padding: 5%;
+}

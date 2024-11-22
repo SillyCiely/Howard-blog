@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { AuthContext } from '../Utils/auth-context'
+import { AuthContext } from '../utils/auth-context'
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavigationLogic } from '../Logic/navigation-logic'
+import { NavigationLogic } from './/navigation-logic'
 
 export const NavigationLogic = () => {
     const {user, logoutUser} = useContext(AuthContext)
