@@ -1,0 +1,71 @@
+:root {
+  --lightgrey: #c6c6c6;
+  --grey:#3f3f3f;
+  --beige:#f8dec3;
+  --dark:#282c34;
+  --bubblegumpink:#ff7eb9;
+  --bubblegumblue:#61dafb;
+
+  /* global config */
+  color: var(--grey);
+  background-color: var(--eggshell);
+}
+
+/* text */
+h1, h2, h3 {
+  font-family: "Lexend", sans-serif;
+  text-align: left;
+  color: var(--grey);
+}
+
+h1 {
+  font-weight: lighter;
+  font-size: 2em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+h3 {
+  align-self: flex-start;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+p {
+  font-size: 1.1em;
+  margin: 0.5em 0;
+}
+
+/* links */
+a {
+  font-weight: 500;
+  color: var(--darkolive);
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--olive);
+}
+
+/* text overflow management */
+.trimmed-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* quick format -- layout management*/
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex-col-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
