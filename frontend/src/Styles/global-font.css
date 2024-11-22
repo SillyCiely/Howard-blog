@@ -1,0 +1,29 @@
+/* default text styling */
+:root, h1, h2, h3, a {
+    font-family: 'Lexend', sans-serif, Arial;
+    font-weight: lighter;
+    color: var(--grey);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* quick-format classes */
+.uppercase {
+    text-transform: uppercase;
+}
+
+.heavy {
+    font-weight: bold;
+}
+
+.trimmed-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
