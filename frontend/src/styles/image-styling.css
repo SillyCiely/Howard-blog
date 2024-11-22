@@ -1,0 +1,8 @@
+#howardImage {
+    max-width: 50%;
+    max-height: 50%;
+    width: auto;
+    height: auto;
+    object-fit: contain; /* some funky scaling without this */
+    border-radius: 16px;
+}

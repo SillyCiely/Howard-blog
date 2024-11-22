@@ -4,6 +4,7 @@ import { AuthContext, AuthContextProvider } from './utils/auth-context.jsx'
 import './styles/app.css'
 import Navigation from './components/navigation.jsx'
 import HomePage from "./pages/home-page";
+import AboutMePage from "./pages-static/about-me-page";
 import RegisterPage from "./pages/register-page";
 import LoginPage from "./pages/login-page";
 import PostListPage from "./pages/post-page-list";
@@ -23,6 +24,7 @@ const App = () => {
           {/* content */}
           <Routes>
             <Route path='/' element={<HomePage/>}/>
+              <Route path='/about-me' element={<AboutMePage/>}/>
             <Route path='/register' element={<RegisterPage/>}/>
             <Route path='/login' element={<LoginPage/>}/>
 
