@@ -6,3 +6,7 @@
     object-fit: contain; /* some funky scaling without this */
     border-radius: 16px;
 }
+
+.thumbnail {
+    max-width: 90%;
+}

@@ -1,4 +1,15 @@
-.flex-row-container {
-    /*justify-content: normal;*/
-    gap: 1em;
+.card-title-text {
+
+}
+
+.card-author-text {
+
+}
+
+.card-body-text {
+
+}
+
+.info-text {
+    text-align: justify;
 }
