@@ -7,6 +7,8 @@ const usersSchema = new mongoose.Schema({
     userId: {
         required: true,
         type: String,
+        unique: true,
+        index: true,
         // e.g. '1', '2', '3'
     },
     username: {
