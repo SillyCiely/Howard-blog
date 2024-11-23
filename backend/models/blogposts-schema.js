@@ -15,6 +15,7 @@ const blogpostsSchema = new mongoose.Schema({
     authorId: {
         type: String,
         required: true,
+        index: true,
     },
     dateStamp: {
         type: Date,
