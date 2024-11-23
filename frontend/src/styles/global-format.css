@@ -5,15 +5,17 @@
 .flex-row-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     box-sizing: border-box;
 }
 
 .flex-col-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     box-sizing: border-box;
+}
+
+.space {
+    justify-content: space-between;
 }
 
 .box-container {

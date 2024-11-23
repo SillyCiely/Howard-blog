@@ -5,7 +5,7 @@ import '../styles/navigation.css'
 const Navigation = () => {
 
     return (
-        <nav className={`flex-row-container`}>
+        <nav className={`flex-row-container space`}>
                 <Link to={'/'}>Home</Link>
 
             <div id={`right-aligned-links`}>
