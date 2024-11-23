@@ -1,6 +1,5 @@
 #howardImage {
-    max-width: 50%;
-    max-height: 50%;
+    max-height: 50vh;
     width: auto;
     height: auto;
     object-fit: contain; /* some funky scaling without this */
