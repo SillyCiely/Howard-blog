@@ -35,8 +35,14 @@
     .flex-row-container {
         flex-direction: column;
     }
-    img, .thumbnail{
+    img, .thumbnail-container {
         align-self: center;
         max-width: 90%;
+    }
+}
+
+@media (min-width: 900px) {
+    .filter-blog-flex-container {
+        flex-direction: column;
     }
 }
