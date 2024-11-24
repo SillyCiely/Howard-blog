@@ -7,10 +7,12 @@ import HomePage from "./pages/home-page";
 import AboutMePage from "./pages-static/about-me-page";
 import RegisterPage from "./pages/register-page";
 import LoginPage from "./pages/login-page";
-import PostListPage from "./pages/post-page-list";
+import PostListPage from "./pages/post-list-page";
 import PostDetailPage from "./pages/post-detail-page";
 import UserProfilePage from "./pages/user-profile-page";
 import CreatePostPage from "./pages/create-post-page";
+import ShortListPage from "./pages/short-list-page";
+import AddShortPage from "./pages/add-short-page";
 
 const App = () => {
     const {user} = useContext(AuthContext)
@@ -30,6 +32,9 @@ const App = () => {
 
                     <Route path='/posts' element={<PostListPage/>}/>
                     <Route path='/post/:id' element={<PostDetailPage/>}/>
+                    <Route path={'/shorts'} element={<ShortListPage/>}/>
+                    {/* clicking on the short (embed) should take to original source */}
+                    {/*<Route path={'/short/:id'} element={<ShortDetailPage/>}/>*/}
 
                     {/* requires being logged in */}
                     {user && (
@@ -37,7 +42,10 @@ const App = () => {
                     )}
                     {/* requires being logged in as admin */}
                     {user && user.role === 'admin' && (
-                        <Route path='/post/new' element={<CreatePostPage/>}/>
+                        <>
+                            <Route path={'/post/new'} element={<CreatePostPage/>}/>
+                            <Route path={'/short/new'} element={<AddShortPage/>}/>
+                        </>
                     )}
                 </Routes>
             </Router>
