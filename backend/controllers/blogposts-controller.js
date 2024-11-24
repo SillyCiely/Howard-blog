@@ -16,6 +16,8 @@ const getAllPosts = async (req, res) => {
                     },
                 },
                 {
+                    // excluded fields from author object
+                    // author.username is the only field included
                     $project: {
                         'author.userId': 0,
                         'author.email': 0,
