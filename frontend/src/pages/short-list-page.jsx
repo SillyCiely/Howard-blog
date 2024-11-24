@@ -2,39 +2,34 @@ import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import PageTemplate from "../components/page-template";
 import ContentContainer from "../components/content-container";
-import PostInfo from "../components/post-info";
-import { Link } from "react-router-dom";
 
-const PostListPage = () => {
+const ShortListPage = () => {
     // const api = import.meta.env.VITE_SERVER_URL
     // fixme: set to reference to .env file
     const api = "http://localhost:3000"
-    const [blogpost, setBlogpost] = useState([])
+    const [short, setShort] = useState([])
 
-    useEffect(() => {
-        const url = api + '/posts/'
-        console.log('Request URL:', url);
-        axios
-            .get(url)
-            .then((res) => {
-                setBlogpost(res.data)
-            })
-            .catch((error) => console.log(error))
-    }, [])
+    // useEffect(() => {
+    //     // todo: set up shorts endpoint in the backend
+    //     const url = api + '/shorts/'
+    //     console.log('Request URL:', url);
+    //     axios
+    //         .get(url)
+    //         .then((res) => {
+    //             setBlogpost(res.data)
+    //         })
+    //         .catch((error) => console.log(error))
+    // }, [])
 
     return (
-        <PageTemplate title={`Recent Posts`}>
+        <PageTemplate title={`Recent Shorts`}>
             <ContentContainer>
-                {/*<Link to={`/posts/${post.postId}`} className='box-container flex-col-container'>*/}
                     <div className='box-container flex-col-container'>
-                        {blogpost.map(post => (
-                            <PostInfo key={post.postId} post={post}/>
-                        ))}
+                    {/*    todo: map shorts */}
                     </div>
-                {/*</Link>*/}
             </ContentContainer>
         </PageTemplate>
     )
 }
 
-export default PostListPage
+export default ShortListPage

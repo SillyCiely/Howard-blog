@@ -11,6 +11,7 @@ const Navigation = () => {
             <div id={`right-aligned-links`}>
                 <Link to={'/about-me'}>About Me</Link>
                 <Link to={'/posts'}>Posts</Link>
+                <Link to={'/shorts'}>Shorts</Link>
             </div>
         </nav>
     )
