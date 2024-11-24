@@ -1,20 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import ImageRenderer from "../utils/image-renderer";
 
 const PostInfo = ({post, onClick}) => {
-    console.log(post)
-    return (
-        <div>
-            <div className='thumbnail'>
-                <img src='https://via.placeholder.com/150' alt='thumbnail'/>
-            </div>
+    const imageData = post?.image?.data || []
+    const imageMimeType = post.imageMimeType
 
-            <div className='info-text'>
-                <Link to={`/posts/${post.postId}`}>
-                    <div>{post.postTitle}</div>
+    return (
+        <div className={`flex-row-container gap`}>
+            <ImageRenderer imageData={imageData} imageMimeType={imageMimeType} alt='thumbnail' className={`thumbnail`}/>
+
+            <div className={`info-text`}>
+                <Link to={`/posts/${post.postId}`} className={`card-title-text`}>
+                    <h2>{post.postTitle}</h2>
                 </Link>
-                <div className='post-author'>written by {post.author[0]?.name}</div>
-                <div>{post.postBody}</div>
+                <h3 className={`card-author-text`}>written by {post.author[0].username}</h3>
+                <p className={`card-body-text`}>{post.postBody}</p>
             </div>
         </div>
     )

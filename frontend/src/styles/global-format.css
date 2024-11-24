@@ -18,6 +18,10 @@
     justify-content: space-between;
 }
 
+.gap {
+    gap: 1em;
+}
+
 .box-container {
     gap: 2em;
     padding: 1em;
@@ -29,6 +33,16 @@
 /* convert flex-row to flex-col under 768px*/
 @media (max-width: 768px) {
     .flex-row-container {
+        flex-direction: column;
+    }
+    img, .thumbnail-container {
+        align-self: center;
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 900px) {
+    .filter-blog-flex-container {
         flex-direction: column;
     }
 }

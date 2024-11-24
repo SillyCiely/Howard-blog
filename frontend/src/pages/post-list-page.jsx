@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import PageTemplate from "../components/page-template";
 import ContentContainer from "../components/content-container";
 import PostInfo from "../components/post-info";
+import { Link } from "react-router-dom";
 
 const PostListPage = () => {
     // const api = import.meta.env.VITE_SERVER_URL
@@ -24,11 +25,13 @@ const PostListPage = () => {
     return (
         <PageTemplate title={`Recent Posts`}>
             <ContentContainer>
-                <div className='box-container'>
-                    {blogpost.map(post => (
-                        <PostInfo key={post.postId} post={post}/>
-                    ))}
-                </div>
+                {/*<Link to={`/posts/${post.postId}`} className='box-container flex-col-container'>*/}
+                    <div className='box-container flex-col-container'>
+                        {blogpost.map(post => (
+                            <PostInfo key={post.postId} post={post}/>
+                        ))}
+                    </div>
+                {/*</Link>*/}
             </ContentContainer>
         </PageTemplate>
     )

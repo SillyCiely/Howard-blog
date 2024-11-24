@@ -5,3 +5,11 @@
     object-fit: contain; /* some funky scaling without this */
     border-radius: 16px;
 }
+
+.thumbnail {
+    /* fixme: min 300/90% will extend the size
+        of the container for some reason*/
+    /*max-width: min(300px, 90%);*/
+    max-width: 300px;
+    height: auto;
+}
