@@ -1,17 +1,11 @@
 import PageTemplate from "../components/page-template";
 import ContentContainer from "../components/content-container";
-import howardImage from '../media/howard-20230114.jpg';
 import { Link } from "react-router-dom";
-
+import { laparoscopyTitle, laparoscopyDesc } from "./laparoscopy-page";
+import { endoscopyTitle, endoscopyDesc } from "./endoscopy-page";
+import { skinProcTitle, skinProcDesc } from "./skin-procedures-page";
 
 const OperationsPage = () => {
-    const laparoscopyTitle = `Laparoscopy`
-    const laparoscopyDesc = `Laparoscopy is a minimally invasive surgical technique...`
-    const endoscopyTitle = `Endoscopy`
-    const endoscopyDesc = `Endoscopy involves using a camera (endoscope) to look inside the gastrointestinal tract...`
-    const skinProcTitle = `Skin Procedures`
-    const skinProcDesc = `Skin lesions can be cancerous or non-cancerous...`
-
     return (
         <PageTemplate title={`Operations`}>
             <ContentContainer className={`flex-col-container box-container`}>
@@ -28,7 +22,7 @@ const OperationsPage = () => {
                     <p>{endoscopyDesc}</p>
                 </div>
                 <div id={skinProcTitle}>
-                    <Link to={`/operations/${skinProcTitle}`}>
+                    <Link to={`/operations/skin-procedures`}>
                         <h2>{skinProcTitle}</h2>
                     </Link>
                     <p>{skinProcDesc}</p>
