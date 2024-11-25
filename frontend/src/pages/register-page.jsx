@@ -1,9 +1,10 @@
 import PageTemplate from "../components/page-template";
+import RegisterForm from "../components/user-register-form";
 
 const RegisterPage = () => {
     return (
         <PageTemplate>
-            <h1>Register Page</h1>
+            <RegisterForm />
         </PageTemplate>
     )
 }
