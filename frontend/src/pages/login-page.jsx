@@ -1,9 +1,11 @@
 import PageTemplate from "../components/page-template";
+import LoginForm from "../components/user-login-form";
 
 const LoginPage = () => {
     return (
         <PageTemplate>
-            <h1>Login Page</h1>
+            {/*<LoginForm />*/}
+            <h1>test</h1>
         </PageTemplate>
     )
 }

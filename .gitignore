@@ -1,2 +1,4 @@
 /backend/node_modules/
 /backend/.env
+/frontend/src/components/PAWPOSTnavigation.jsx
+/frontend/.env
