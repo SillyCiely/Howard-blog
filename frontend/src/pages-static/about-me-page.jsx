@@ -1,5 +1,6 @@
 import PageTemplate from "../components/page-template";
 import ContentContainer from "../components/content-container";
+import { Link } from 'react-router-dom';
 import howardImage from '../media/howard-20230114.jpg';
 import '../styles/image-styling.css';
 
@@ -18,6 +19,8 @@ const AboutMePage = () => {
                         <br/><br/>
                         Dr Fan's special interests are in gastrointestinal (GI)
                         surgery focusing on minimally invasive, laparoscopic, and endoscopic techniques. </p>
+                    <p>Learn more about <u><Link to="/operations/laparoscopy">laparoscopy</Link></u> or <u><Link to="/operations/endoscopy">endoscopy</Link></u> by following these links!</p>
+
                 </div>
             </ContentContainer>
         </PageTemplate>

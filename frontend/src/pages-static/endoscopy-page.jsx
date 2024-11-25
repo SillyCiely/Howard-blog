@@ -36,6 +36,13 @@ const EndoscopyPage = () => {
                             the anaesthetic.
                         </li>
                     </ul>
+
+                    <h2>Endoscopy Risks</h2>
+                    <ul>
+                        <li><strong>Bleeding:</strong> This may occur if we take biopsies or remove polyps. The risks of bleeding is generally low, but is higher if you take medications for anticoagulation (blood thinners). </li>
+                        <li><strong>Bowel Perforation</strong>  (hole in the bowel): This is very rare, but if it happens you may need an operation to fix or remove the area affected. </li>
+                        <li><strong>Missed lesions:</strong> Sometimes it is not possible to see every aspect of the large bowel. This is often due to inadequate bowel preparation and having poo covering parts of the bowel. We always try to clean the bowel wall when we are looking but this is not always possible and small lesions may be missed. </li>
+                    </ul>
                 </div>
             </ContentContainer>
         </PageTemplate>

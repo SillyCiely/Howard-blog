@@ -51,6 +51,14 @@ const LaparoscopyPage = () => {
                             are in pain or require strong pain medications.
                         </li>
                     </ul>
+
+                    <h2>Laparoscopy Risks</h2>
+                    <ul>
+                        <li><strong>Bleeding:</strong> Any operation carries the risk of bleeding because cuts need to be made in the operation. Bleeding is usually minor and stopped during the operation. 1 in 1000 people may need a blood transfusion. </li>
+                        <li><strong>Infection:</strong> Any time a cut is made, there is a risk of infection. Infection risks depend on the reason for the operation. Clearly the risk of infection is higher if the operation performed is to treat an infection. Overall infections rates for elective operations are around 1-2%. </li>
+                        <li><strong>Bowel injury:</strong> Laparoscopy involves inserting instruments into the abdomen. All care is taken to avoid injury, and injuries to organs inside the abdomen are rare, with an over all risk of around 3 in 1000. </li>
+                        <li><strong>Hernia:</strong> Even tiny key-hole cuts disrupt the strength of your abdominal wall under the skin. These weaknesses are potential points for hernias to occur where contents inside the abdomen come out through these incision sites. Healing takes about 6 weeks, and that is the reason we ask you to perform light duties during this period. </li>
+                    </ul>
                 </div>
             </ContentContainer>
         </PageTemplate>
