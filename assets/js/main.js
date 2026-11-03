@@ -208,7 +208,9 @@
   var locs = $('[data-locations]');
   if (locs) {
     var items = $$('.loc-item', locs);
-    var regionBtns = $$('[data-region]', locs);
+    // Only the Sydney/Griffith toggle. .loc-item also carries data-region, and
+    // matching it made every click bubble into setRegion() and reset to the first item.
+    var regionBtns = $$('.segmented [data-region]', locs);
     var panel = $('.loc-panel', locs);
     var mapFrame = panel ? $('iframe', panel) : null;
     var region = 'syd';
@@ -219,7 +221,6 @@
       $('[data-f="name"]', panel).textContent = d.name;
       $('[data-f="addr"]', panel).textContent = d.addr;
       var tel = $('[data-f="tel"]', panel); tel.textContent = d.phone; tel.href = 'tel:' + d.phone.replace(/[^0-9]/g, '');
-      $('[data-f="call"]', panel).href = 'tel:' + d.phone.replace(/[^0-9]/g, '');
       $('[data-f="maps"]', panel).href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.name + ', ' + d.addr);
       var tags = $('[data-f="tags"]', panel);
       tags.innerHTML = '';

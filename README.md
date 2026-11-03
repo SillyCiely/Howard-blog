@@ -30,9 +30,8 @@ Open `index.html` in any browser. Everything works offline except the Google Fon
 4. **Affiliation logos** (homepage) — in `index.html`, each tile contains `<span class="aff-tile__logo">Logo</span>`. Replace that line with an image, e.g.
    `<img src="assets/img/affiliations/racs.png" alt="Royal Australasian College of Surgeons">`
 5. **Social links** (footer, every page) — the links are templates such as `https://www.linkedin.com/in/your-profile`. Replace them with the real profiles. The round buttons show short labels (in, IG, Th, TT, Fb, X); you can swap each label for the platform's official icon from its brand resources page.
-6. **AHPRA registration number** — the footer shows `[MED0000000000]`. Replace it on every page (search and replace).
-7. **Bowel preparation PDF** (optional) — save the PDF as `assets/docs/bowel-preparation-instructions.pdf` and link to it from `other-resources.html`.
-8. **Wording check** — the homepage bio says "Royal Australian College of Surgery". The college's name is the Royal Australasian College of Surgeons.
+6. **Bowel preparation PDF** (optional) — save the PDF as `assets/docs/bowel-preparation-instructions.pdf` and link to it from `other-resources.html`.
+7. **Wording check** — the homepage bio says "Royal Australian College of Surgery". The college's name is the Royal Australasian College of Surgeons.
 
 Tip: because the header and footer appear on every page, a find-and-replace across all `.html` files is the quickest way to change them. A developer can instead edit `_source/build.py` and run `python3 build.py` to regenerate all pages at once.
 

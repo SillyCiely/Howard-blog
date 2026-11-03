@@ -54,10 +54,10 @@ LOCATIONS = [
     ("syd", "St George Private Hospital", "Kogarah", "Consulting & Operating", "1 South St, Kogarah NSW 2217", "1300 038 398"),
     ("syd", "Kareena Private Hospital", "Caringbah", "Consulting & Operating", "Level 3, 86 Kareena Rd, Caringbah NSW 2229", "1300 038 398"),
     ("syd", "Ramsay Surgical Centre Miranda", "Miranda", "Operating", "533 Kingsway, Miranda NSW 2228", "1300 038 398"),
-    ("syd", "Hurstville Consulting Rooms", "Hurstville", "Consulting", "185A Forest Rd, Hurstville NSW 2220", "(02) 9580 7233"),
-    ("syd", "Woolooware Consulting Rooms", "Woolooware", "Consulting", "156 Kingsway, Woolooware NSW 2230", "(02) 9523 6600"),
-    ("syd", "Miranda Consulting Rooms", "Miranda", "Consulting", "573 Kingsway, Miranda NSW 2228", "(02) 9540 1044"),
-    ("syd", "Cronulla Consulting Rooms", "Cronulla", "Consulting", "Suite 3, Level 1, 17 Surf Rd, Cronulla NSW 2230", "1300 038 398"),
+    ("syd", "Hurstville", "Hurstville", "Consulting", "185A Forest Rd, Hurstville NSW 2220", "(02) 9580 7233"),
+    ("syd", "Woolooware", "Woolooware", "Consulting", "156 Kingsway, Woolooware NSW 2230", "(02) 9523 6600"),
+    ("syd", "Miranda", "Miranda", "Consulting", "573 Kingsway, Miranda NSW 2228", "(02) 9540 1044"),
+    ("syd", "Cronulla", "Cronulla", "Consulting", "Suite 3, Level 1, 17 Surf Rd, Cronulla NSW 2230", "1300 038 398"),
     ("grf", "St Vincent’s Private Community Hospital", "Griffith", "Consulting & Operating", "41-45 Animoo Ave, Griffith NSW 2680", "(02) 6966 8300"),
     ("grf", "Griffith Base Hospital", "Griffith", "Consulting & Operating", "1 Noorebar Ave, Griffith NSW 2680", "(02) 6969 5811"),
 ]
@@ -180,7 +180,7 @@ def footer():
 <div class="footer-col"><h2>Follow</h2><div class="socials">{socials}</div></div>
 </div>
 <div class="footer-bottom">
-<span>Information on this website is general in nature and is not a substitute for individual medical advice. In an emergency, call 000. AHPRA registration [MED0000000000].</span>
+<span>Information on this website is general in nature and is not a substitute for individual medical advice. In an emergency, call 000.</span>
 <span>© <span data-year>2026</span> Dr Howard Fan</span>
 </div>
 </div>
@@ -204,7 +204,7 @@ def book_band():
 </div>
 <div class="book-card book-card--light reveal" style="--d:.08s">
 <span class="book-card__kicker">Patients</span>
-<h3>Call or email the rooms</h3>
+<h3>Call or email</h3>
 <p>Send your GP referral letter and we’ll contact you to arrange an appointment.</p>
 <div class="book-card__actions">
 <a class="btn btn--primary" href="{tel(PHONE)}">{PHONE}</a>
@@ -290,7 +290,8 @@ def related(cards):
 </section>"""
 
 def write(path, html):
-    (DIST / path).write_text(html, encoding="utf-8")
+    with open(DIST / path, "w", encoding="utf-8", newline="\n") as f:  # keep LF line endings on Windows
+        f.write(html)
     print("wrote", path)
 
 # ================================================================ HOME
@@ -298,7 +299,7 @@ def home():
     updates = [
         ("No-gap gastroscopy &amp; colonoscopy", f'Now accepting direct referrals for suitable patients. Ask your GP to email a referral to <a href="mailto:{EMAIL}">{EMAIL}</a>.'),
         ("Telehealth appointments", "Telehealth appointments are available for suitable consultations, to save you time and travel."),
-        ("Nine locations across Sydney’s south and Griffith", "Rooms at Kogarah, Caringbah, Hurstville, Miranda, Woolooware and Cronulla, plus Griffith in the Riverina."),
+        ("Nine locations across Sydney’s south and Griffith", "See Dr Fan at Kogarah, Caringbah, Hurstville, Miranda, Woolooware and Cronulla, plus Griffith in the Riverina."),
     ]
     upd_html = "".join(f"""<div class="update{' is-active' if i == 0 else ''}" aria-hidden="{'false' if i == 0 else 'true'}">
 <span class="update__title">{t}</span><span class="update__body">{b}</span>
@@ -341,8 +342,8 @@ def home():
 </a>""" for name, url in affils)
 
     steps = [
-        ("Referral", "Start with a GP referral", "Ask your GP for a referral to Dr Howard Fan. Referrals can be emailed straight to the rooms, and we’ll contact you to arrange an appointment.",
-         ["GPs can email referrals to admin@drfan.com.au", "No-gap direct referral gastroscopy and colonoscopy for suitable patients", "Prefer to call? Ring the rooms on 1300 038 398"]),
+        ("Referral", "Start with a GP referral", "Ask your GP for a referral to Dr Howard Fan. Referrals can be emailed straight to us, and we’ll contact you to arrange an appointment.",
+         ["GPs can email referrals to admin@drfan.com.au", "No-gap direct referral gastroscopy and colonoscopy for suitable patients", "Prefer to call? Ring 1300 038 398"]),
         ("Consultation", "Unhurried, honest advice", "Dr Fan explains your diagnosis, outlines all appropriate management options and answers your questions thoroughly. When surgery isn’t the best option, you’ll get honest guidance on the alternatives.",
          ["Telehealth appointments available to save you time", "You may also meet the anaesthetist and, where needed, allied health staff"]),
         ("Preparing", "Getting ready for your procedure", "You’ll receive individual instructions. As a general guide:",
@@ -542,7 +543,6 @@ def home():
 </div>
 <div class="loc-panel__actions">
 <a class="btn btn--dark" data-f="maps" href="#" target="_blank" rel="noopener">Get directions</a>
-<a class="btn btn--outline" data-f="call" href="#">Call rooms</a>
 </div>
 </div>
 </div>
@@ -556,7 +556,7 @@ def home():
 <div class="faq__intro reveal">
 <p class="eyebrow">FAQs</p>
 <h2 class="section-title" id="faq-title">Common questions</h2>
-<p>Can’t see your question? Call the rooms on <a href="{tel(PHONE)}" style="color:var(--ink);font-weight:600">{PHONE}</a>.</p>
+<p>Can’t see your question? Call <a href="{tel(PHONE)}" style="color:var(--ink);font-weight:600">{PHONE}</a>.</p>
 <a class="text-link" href="faqs.html">See all FAQs {icon("arrow")}</a>
 </div>
 <div class="faq-list reveal" style="--d:.08s">
@@ -739,7 +739,7 @@ def postop():
 <p>You may initially experience some difficulty swallowing, but that will improve with time.</p>"""),
         ("concerns", "Other Concerns", f"""<p>Please contact us if there are any concerns. Things that may be concerning include:</p>
 <ul class="check-list"><li>Redness over the wound</li><li>Foul smell, discharge, or breakdown of the wound</li><li>Pain that is not improving</li><li>Persistent bleeding or enlarging bruising/swelling</li></ul>
-<div class="book-card__actions"><a class="btn btn--primary" href="{tel(PHONE)}">Call {PHONE}</a><a class="btn btn--outline" href="mailto:{EMAIL}">Email the rooms</a></div>""" + GENERAL_NOTE),
+<div class="book-card__actions"><a class="btn btn--primary" href="{tel(PHONE)}">Call {PHONE}</a></div>""" + GENERAL_NOTE),
     ]
     inner("post-operative-instructions.html", "Post Operative Instructions",
           "Aftercare instructions for endoscopy, haemorrhoid, skin, hand, keyhole, gallbladder, hernia and reflux surgery.",
@@ -751,7 +751,7 @@ def faqs_page():
     html += header("faqs.html") + '<main id="main">\n'
     html += page_hero("Patient information", "FAQs", "Answers to the questions Dr Fan is asked most often.", [("Patient information", None), ("FAQs", None)])
     html += f"""<section class="section"><div class="container faq__grid">
-<div class="faq__intro reveal"><p class="eyebrow">Common questions</p><h2 class="section-title">Still have a question?</h2><p>Call the rooms on <a href="{tel(PHONE)}" style="color:var(--ink);font-weight:600">{PHONE}</a> or email <a href="mailto:{EMAIL}" style="color:var(--ink);font-weight:600">{EMAIL}</a>.</p></div>
+<div class="faq__intro reveal"><p class="eyebrow">Common questions</p><h2 class="section-title">Still have a question?</h2><p>Call <a href="{tel(PHONE)}" style="color:var(--ink);font-weight:600">{PHONE}</a> or email <a href="mailto:{EMAIL}" style="color:var(--ink);font-weight:600">{EMAIL}</a>.</p></div>
 <div class="faq-list reveal" style="--d:.08s">{faq_items(FAQS)}</div>
 </div></section>
 """
