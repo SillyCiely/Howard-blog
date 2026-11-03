@@ -27,9 +27,8 @@ Open `index.html` in any browser. Everything works offline except the Google Fon
 1. **Portrait** — replace `assets/img/portrait.jpg` with Dr Fan's portrait (portrait shape, 4:5, at least 1200 × 1500 px). Keep the same file name.
 2. **About photo** — replace `assets/img/about-photo.jpg` the same way.
 3. **Logo** — `assets/img/logo.jpg`. A transparent PNG or SVG version will look better on the dark footer; if you get one, save it as `logo.png` and update the `logo.jpg` references in the HTML files.
-4. **Affiliation logos** (homepage) — in `index.html`, each tile contains `<span class="aff-tile__logo">Logo</span>`. Replace that line with an image, e.g.
-   `<img src="assets/img/affiliations/racs.png" alt="Royal Australasian College of Surgeons">`
-5. **Social links** (footer, every page) — the links are templates such as `https://www.linkedin.com/in/your-profile`. Replace them with the real profiles. The round buttons show short labels (in, IG, Th, TT, Fb, X); you can swap each label for the platform's official icon from its brand resources page.
+4. **Affiliation logos** (homepage) — logos live in `assets/img/affiliations/`, named after each tile (`racs`, `gsa`, `gesa`, `canrefer`, `researchgate`, `csu`, `unsw`, `svph`, `kareena`; `.svg` or `.png`). Add or replace a file with the same name and run `python _source/build.py`; a tile without a file shows a grey "Logo" placeholder. Still missing: `csu.svg` and `kareena.png` (those sites block automated downloads).
+5. **Social links** (footer, every page) — already set to the profiles linked from the current drfan.com.au site. To change them, edit `SOCIALS` in `_source/build.py` and rebuild. The icons are SVGs in `assets/img/social/` (Font Awesome Free 6.7.2, CC BY 4.0; the credit comment inside each file must stay).
 6. **Bowel preparation PDF** (optional) — save the PDF as `assets/docs/bowel-preparation-instructions.pdf` and link to it from `other-resources.html`.
 7. **Wording check** — the homepage bio says "Royal Australian College of Surgery". The college's name is the Royal Australasian College of Surgeons.
 

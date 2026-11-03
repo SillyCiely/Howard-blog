@@ -41,14 +41,20 @@ NAV_GROUPS = [
     ("Resources", [("Useful Links", "useful-links.html"), ("Other Resources", "other-resources.html")]),
 ]
 
-SOCIALS = [  # template links – replace with the real profiles
-    ("LinkedIn", "in", "https://www.linkedin.com/in/your-profile"),
-    ("Instagram", "IG", "https://www.instagram.com/your-handle"),
-    ("Threads", "Th", "https://www.threads.net/@your-handle"),
-    ("TikTok", "TT", "https://www.tiktok.com/@your-handle"),
-    ("Facebook", "Fb", "https://www.facebook.com/your-page"),
-    ("X", "X", "https://x.com/your-handle"),
+SOCIALS = [  # same profiles and order as the "Follow" links on drfan.com.au/home
+    ("LinkedIn", "linkedin", "https://www.linkedin.com/in/howardsfan/"),
+    ("Instagram", "instagram", "https://www.instagram.com/drfanfracs/"),
+    ("Threads", "threads", "https://www.threads.net/@drfanfracs"),
+    ("TikTok", "tiktok", "https://www.tiktok.com/@drfan_fracs"),
+    ("Facebook", "facebook", "https://www.facebook.com/DrFanFRACS"),
+    ("X", "x", "https://x.com/DrFanFRACS"),
+    ("YouTube", "youtube", "https://www.youtube.com/@DrFanFRACS"),
 ]
+
+def social_icon(name):
+    """Inline assets/img/social/<name>.svg (brand-coloured; Font Awesome Free, CC BY 4.0)."""
+    svg = (DIST / "assets" / "img" / "social" / f"{name}.svg").read_text(encoding="utf-8").strip()
+    return svg.replace("<svg ", '<svg aria-hidden="true" focusable="false" ', 1)
 
 LOCATIONS = [
     ("syd", "St George Private Hospital", "Kogarah", "Consulting & Operating", "1 South St, Kogarah NSW 2217", "1300 038 398"),
@@ -163,8 +169,8 @@ def footer():
         "".join(f'<a href="{href}">{escape(t)}</a>' for t, href in links) + "</nav>"
         for label, links in NAV_GROUPS[:2] + [("Resources", NAV_GROUPS[2][1] + [("Contact Us", "contact.html")])])
     socials = "".join(
-        f'<a class="social" href="{url}" aria-label="{name}" title="{name}" target="_blank" rel="noopener">{abbr}</a>'
-        for name, abbr, url in SOCIALS)
+        f'<a class="social" href="{url}" aria-label="{name}" title="{name}" target="_blank" rel="noopener">{social_icon(icon_file)}</a>'
+        for name, icon_file, url in SOCIALS)
     return f"""<footer class="site-footer">
 <div class="container site-footer__inner">
 <div class="footer-grid">
@@ -323,23 +329,32 @@ def home():
 <a class="text-link" href="{href}">Learn more<span class="sr-only"> about {escape(name.lower())}</span>{icon("arrow")}</a>
 </article>""" for i, (cat, name, desc, href) in enumerate(procs))
 
+    # (name, link, logo file in assets/img/affiliations/ without extension)
     affils = [
-        ("Royal Australasian College of Surgeons", "https://www.surgeons.org/en"),
-        ("General Surgeons Australia", "https://generalsurgeons.com.au/"),
-        ("Gastroenterological Society of Australia", "https://www.gesa.org.au/"),
-        ("Cancer Institute NSW", "https://www.canrefer.org.au/specialists/howard-fan"),
-        ("ResearchGate", "https://www.researchgate.net/"),
-        ("Charles Sturt University", "https://science-health.csu.edu.au/schools/medicine/people/profiles/rural-generalist-program-murrumbidgee-rural-clinical-school/howard-fan"),
-        ("University of New South Wales", "https://www.unsw.edu.au/staff/howard-fan"),
-        ("St Vincent’s Private Community Hospital Griffith", "https://www.svph.org.au/specialists/dr-howard-fan-surgeon-griffith-%281%29"),
-        ("Kareena Hospital (Ramsay Health)", "https://www.kareenaprivate.com.au/Our-Doctors/Specialists/kareena-private-hospital/general-surgery/109156/dr-howard-fan"),
+        ("Royal Australasian College of Surgeons", "https://www.surgeons.org/en", "racs"),
+        ("General Surgeons Australia", "https://generalsurgeons.com.au/", "gsa"),
+        ("Gastroenterological Society of Australia", "https://www.gesa.org.au/", "gesa"),
+        ("Cancer Institute NSW", "https://www.canrefer.org.au/specialists/howard-fan", "canrefer"),
+        ("ResearchGate", "https://www.researchgate.net/profile/Howard-Fan", "researchgate"),
+        ("Charles Sturt University", "https://science-health.csu.edu.au/schools/medicine/people/profiles/rural-generalist-program-murrumbidgee-rural-clinical-school/howard-fan", "csu"),
+        ("University of New South Wales", "https://www.unsw.edu.au/staff/howard-fan", "unsw"),
+        ("St Vincent’s Private Community Hospital Griffith", "https://www.svph.org.au/specialists/dr-howard-fan-surgeon-griffith-%281%29", "svph"),
+        ("Kareena Hospital (Ramsay Health)", "https://www.kareenaprivate.com.au/Our-Doctors/Specialists/kareena-private-hospital/general-surgery/109156/dr-howard-fan", "kareena"),
     ]
-    # To use a real logo: replace <span class="aff-tile__logo">Logo</span> with
-    # <img src="assets/img/affiliations/racs.png" alt="Royal Australasian College of Surgeons">
-    aff_html = "\n".join(f"""<a class="aff-tile" href="{url}" target="_blank" rel="noopener">
-<span class="aff-tile__logo">Logo</span>
-<span class="aff-tile__name">{escape(name)}</span>
-</a>""" for name, url in affils)
+
+    def aff_logo(slug):
+        # Uses the first matching file; shows the grey placeholder until one is added.
+        for ext in ("svg", "png", "webp", "jpg"):
+            if (DIST / "assets" / "img" / "affiliations" / f"{slug}.{ext}").exists():
+                # alt is empty because the tile's text already names the organisation
+                return f'<img src="assets/img/affiliations/{slug}.{ext}" alt="" loading="lazy">'
+        return '<span class="aff-tile__logo">Logo</span>'
+
+    # Logo only; the name slides in on hover/focus (aria-label gives screen readers the name).
+    aff_html = "\n".join(f"""<a class="aff-tile" href="{url}" target="_blank" rel="noopener" aria-label="{escape(name)}">
+{aff_logo(slug)}
+<span class="aff-tile__label" aria-hidden="true">{escape(name)}</span>
+</a>""" for name, url, slug in affils)
 
     steps = [
         ("Referral", "Start with a GP referral", "Ask your GP for a referral to Dr Howard Fan. Referrals can be emailed straight to us, and we’ll contact you to arrange an appointment.",
