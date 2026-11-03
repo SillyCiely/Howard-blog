@@ -32,6 +32,10 @@ Static website for Dr Howard Fan, general surgeon. Plain HTML, one stylesheet an
 - Pushes to other branches don't deploy. Merge them into `main` with a pull request.
 - Canonical URLs and the sitemap use `BASE_URL` (`https://www.drfan.com.au/`), the planned custom domain.
 
+## Caching
+
+- `head()` and `footer()` link the stylesheet and script through `asset()` in `build.py`. It adds a content hash (`styles.css?v=…`) so browsers fetch new versions after each deploy. Rebuild after any CSS or JS change so the hash updates.
+
 ## Known issues
 
-- **Affiliations carousel on phones:** there is extra empty space after the last logo. Wide logo images (for example `csu.png` at 700px and `gsa.png` at 512px) inflate the `max-content` width of `.aff-track`. Two fix attempts were reverted (commits `25452da` and `cd50e2e`, reverted in `05c4337` and `8e5b80b`). Any new fix needs testing on iPhone Safari, not just Chrome.
+- **Affiliations carousel on phones:** there was extra empty space after the last logo. Wide logo images (for example `csu.png` at 700px and `gsa.png` at 512px) inflated the `max-content` width of `.aff-track`. The fix gives `.aff-tile` a fixed `width` (260px, or 200px on phones) and removes `width: max-content` from `.aff-track` (commits `25452da` and `cd50e2e`, reapplied in `3ca2d7b` and `92c3110`). Confirmed in Chrome; still to be confirmed on iPhone Safari.
