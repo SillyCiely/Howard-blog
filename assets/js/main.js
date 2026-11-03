@@ -286,6 +286,7 @@
     var panel = $('.loc-panel', locs);
     var mapFrame = panel ? $('iframe', panel) : null;
     var region = 'syd';
+    var mobileMq = window.matchMedia('(max-width: 760px)');
 
     function fill(item) {
       if (!panel || !item) return;
@@ -323,17 +324,24 @@
         it.parentElement.hidden = !show;
         if (show && !first) first = it;
       });
-      select(first);
+      // Phones show locations as an accordion, so start with all of them closed.
+      // Desktop needs one selected to fill the map panel.
+      select(mobileMq.matches ? null : first);
     }
     items.forEach(function (it) {
       $('.loc-btn', it).addEventListener('click', function () {
-        var mobile = window.matchMedia('(max-width: 760px)').matches;
-        if (mobile && it.classList.contains('is-active')) { it.classList.remove('is-active'); this.setAttribute('aria-expanded', 'false'); return; }
+        if (mobileMq.matches && it.classList.contains('is-active')) { it.classList.remove('is-active'); this.setAttribute('aria-expanded', 'false'); return; }
         select(it);
       });
     });
     regionBtns.forEach(function (b) { b.addEventListener('click', function () { setRegion(b.dataset.region); }); });
     setRegion('syd');
+    // Widening to desktop with nothing open would leave the map panel empty
+    var onMqChange = function () {
+      if (!mobileMq.matches && !items.some(function (it) { return it.classList.contains('is-active') && !it.parentElement.hidden; })) setRegion(region);
+    };
+    if (mobileMq.addEventListener) mobileMq.addEventListener('change', onMqChange);
+    else if (mobileMq.addListener) mobileMq.addListener(onMqChange);
   }
 
   /* ---------- FAQ: one open at a time within a list ---------- */
