@@ -3,7 +3,6 @@
 Shared header/footer live here so every page stays consistent.
 Run:  python3 build.py
 """
-import hashlib
 import json
 from html import escape
 from pathlib import Path
@@ -17,11 +16,6 @@ EMAIL = "admin@drfan.com.au"
 # request filled in (works on any host). To receive submissions directly, create a form at a service
 # such as Formspree and paste its endpoint here, e.g. "https://formspree.io/f/abcdwxyz", then rebuild.
 FORM_ENDPOINT = ""
-
-def asset(path):
-    """Adds a short content hash (?v=...) so browsers fetch the new file after each change instead of a cached copy."""
-    digest = hashlib.md5((DIST / path).read_bytes()).hexdigest()[:8]
-    return f"{path}?v={digest}"
 
 # ---------------------------------------------------------------- icons
 def icon(name, size=None):
@@ -124,7 +118,7 @@ def head(title, description, path):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap">
-<link rel="stylesheet" href="{asset("assets/css/styles.css")}">
+<link rel="stylesheet" href="assets/css/styles.css">
 <script>document.documentElement.classList.remove('no-js');document.documentElement.classList.add('js');</script>
 """
 
@@ -207,7 +201,7 @@ def footer():
 <a href="{tel(PHONE)}">{icon("phone")}Call</a>
 <a href="book.html">Book a consultation</a>
 </div>
-<script src="{asset("assets/js/main.js")}" defer></script>
+<script src="assets/js/main.js" defer></script>
 </body>
 </html>
 """

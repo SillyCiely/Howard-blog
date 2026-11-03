@@ -211,7 +211,7 @@ ul { margin: 0; padding: 0; }
 .aff-viewport:focus-visible { outline-offset: -2px; border-radius: 24px; }
 .affiliations.is-dragging .aff-viewport { scroll-snap-type: none; cursor: grabbing; user-select: none; }
 .affiliations.is-dragging .aff-tile { pointer-events: none; }
-.aff-track { display: flex; gap: 16px; }
+.aff-track { display: flex; gap: 16px; width: max-content; }
 /* Fixed width, not flex-basis: wide logo images would otherwise stretch the track and leave a gap after the last tile */
 .aff-tile { position: relative; overflow: hidden; flex: none; width: 260px; scroll-snap-align: start; aspect-ratio: 1; border-radius: 24px; background: var(--white); border: 1px solid var(--line); padding: 24px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--ink); transition: border-color .3s, box-shadow .3s, transform .3s var(--ease); }
 .aff-tile:hover, .aff-tile:focus-visible { color: var(--ink); border-color: #C9CFEA; box-shadow: 0 18px 36px -24px rgba(14,24,56,.35); transform: translateY(-3px); }
