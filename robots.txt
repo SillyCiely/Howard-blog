@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.drfan.com.au/sitemap.xml
