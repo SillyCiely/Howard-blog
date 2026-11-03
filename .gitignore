@@ -1,0 +1,21 @@
+# Editor / IDE settings
+.idea/
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Crash dumps and logs
+*.stackdump
+*.log
+
+# Python (from running _source/build.py)
+__pycache__/
+*.pyc
+
+# Local environment files
+.env
+.env.*

@@ -11,6 +11,7 @@ A complete static website: plain HTML, CSS and a small JavaScript file. No build
 | `operation-risks.html`, `post-operative-instructions.html`, `faqs.html` | Patient information |
 | `useful-links.html`, `other-resources.html` | Resources |
 | `contact.html` | Contact Us and all locations |
+| `book.html` | Book a consultation (appointment request form) |
 | `404.html` | "Page not found" page |
 | `assets/css/styles.css` | All styling (colours are at the top as variables, e.g. `--brand: #3134CF`) |
 | `assets/js/main.js` | Menus, carousels, steps, locations, FAQs and scroll animations |
@@ -33,6 +34,18 @@ Open `index.html` in any browser. Everything works offline except the Google Fon
 7. **Wording check** — the homepage bio says "Royal Australian College of Surgery". The college's name is the Royal Australasian College of Surgeons.
 
 Tip: because the header and footer appear on every page, a find-and-replace across all `.html` files is the quickest way to change them. A developer can instead edit `_source/build.py` and run `python3 build.py` to regenerate all pages at once.
+
+## Booking form
+
+`book.html` has an appointment request form. Out of the box, pressing **Send request** opens the visitor's own email app with their details filled in, addressed to admin@drfan.com.au, so it works on any host with no setup. The visitor still has to press Send in their email app.
+
+To receive requests directly instead (no email app needed):
+
+1. Create a free form at a service such as [Formspree](https://formspree.io) and copy its endpoint URL (looks like `https://formspree.io/f/abcdwxyz`).
+2. In `_source/build.py`, set `FORM_ENDPOINT = "https://formspree.io/f/abcdwxyz"`.
+3. Run `python _source/build.py`.
+
+The form then sends in the background and shows a "Thanks, we've received your request" message. If sending fails, it asks the visitor to call or email instead. Because requests contain personal details, check the service's privacy terms suit a medical practice before switching.
 
 ## Hosting (when you're ready)
 

@@ -121,51 +121,123 @@
     show(0); syncPlayState();
   }
 
-  /* ---------- Affiliations carousel ---------- */
+  /* ---------- Affiliations: native scroll + draggable scrollbar ---------- */
   var aff = $('[data-aff]');
   if (aff) {
-    var viewport = $('.aff-viewport', aff);
-    var track = $('.aff-track', aff);
-    var tiles = $$('.aff-tile', track);
-    var bar = $('.progress__bar', aff);
-    var aIdx = 0, timer = null, hovering = false;
+    var scroller = $('.aff-viewport', aff);
+    var sbar = $('.aff-scrollbar', aff);
+    var thumb = sbar ? $('.aff-scrollbar__thumb', sbar) : null;
+    var firstTile = $('.aff-tile', aff);
+    var autoTimer = null, idleUntil = 0, pointerInside = false;
 
-    function metrics() {
-      var tileW = tiles[0] ? tiles[0].getBoundingClientRect().width : 220;
-      var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 16;
-      var step = tileW + gap;
-      var visible = Math.max(1, Math.floor((viewport.clientWidth + gap) / step));
-      return { step: step, max: Math.max(0, tiles.length - visible), visible: visible };
+    function maxScroll() { return Math.max(0, scroller.scrollWidth - scroller.clientWidth); }
+    function step() {
+      var gap = parseFloat(getComputedStyle($('.aff-track', aff)).columnGap) || 16;
+      return (firstTile ? firstTile.getBoundingClientRect().width : 260) + gap;
     }
-    function go(i) {
-      var m = metrics();
-      if (i > m.max) i = 0;
-      if (i < 0) i = m.max;
-      aIdx = i;
-      track.style.transform = 'translateX(' + (-aIdx * m.step) + 'px)';
-      if (bar) bar.style.width = Math.round(Math.min(1, (aIdx + m.visible) / tiles.length) * 100) + '%';
+    function clamp01(n) { return Math.min(1, Math.max(0, n)); }
+    function sync() {
+      if (!sbar) return;
+      var max = maxScroll();
+      sbar.hidden = max < 2;
+      var trackW = sbar.clientWidth;
+      var thumbW = Math.max(48, trackW * scroller.clientWidth / scroller.scrollWidth);
+      var pos = max ? clamp01(scroller.scrollLeft / max) : 0;
+      thumb.style.width = thumbW + 'px';
+      thumb.style.transform = 'translateX(' + pos * (trackW - thumbW) + 'px)';
+      sbar.setAttribute('aria-valuenow', Math.round(pos * 100));
     }
-    function start() { stop(); if (!reduceMotion) timer = setInterval(function () { if (!hovering && !document.hidden) go(aIdx + 1); }, 2800); }
-    function stop() { if (timer) clearInterval(timer); timer = null; }
-    var ap = $('[data-aff-prev]', aff), an = $('[data-aff-next]', aff);
-    if (ap) ap.addEventListener('click', function () { go(aIdx - 1); start(); });
-    if (an) an.addEventListener('click', function () { go(aIdx + 1); start(); });
-    viewport.addEventListener('mouseenter', function () { hovering = true; });
-    viewport.addEventListener('mouseleave', function () { hovering = false; });
-    viewport.addEventListener('focusin', function () { hovering = true; });
-    viewport.addEventListener('focusout', function () { hovering = false; });
-    // swipe
-    var startX = null;
-    viewport.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; hovering = true; }, { passive: true });
-    viewport.addEventListener('touchend', function (e) {
-      if (startX !== null) {
-        var dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 40) go(aIdx + (dx < 0 ? 1 : -1));
-      }
-      startX = null; hovering = false;
+    // Any interaction pauses auto-scroll for a couple of seconds
+    function hold(ms) { idleUntil = Date.now() + (ms || 2000); }
+
+    scroller.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    $$('img', scroller).forEach(function (im) { if (!im.complete) im.addEventListener('load', sync); });
+
+    if (sbar && thumb) {
+      // Drag the thumb, or press anywhere on the track to jump there and keep dragging
+      var barDrag = null;
+      var scrollFromBar = function (clientX, grabOffset) {
+        var r = sbar.getBoundingClientRect(), tw = thumb.offsetWidth;
+        scroller.scrollLeft = clamp01((clientX - r.left - grabOffset) / (r.width - tw)) * maxScroll();
+      };
+      sbar.addEventListener('pointerdown', function (e) {
+        if (e.button > 0) return;
+        e.preventDefault();
+        var tr = thumb.getBoundingClientRect();
+        var onThumb = e.clientX >= tr.left && e.clientX <= tr.right;
+        barDrag = { offset: onThumb ? e.clientX - tr.left : tr.width / 2 };
+        if (!onThumb) scrollFromBar(e.clientX, barDrag.offset);
+        sbar.setPointerCapture(e.pointerId);
+        aff.classList.add('is-dragging');
+        sbar.focus({ preventScroll: true });
+        hold();
+      });
+      sbar.addEventListener('pointermove', function (e) { if (barDrag) { scrollFromBar(e.clientX, barDrag.offset); hold(); } });
+      var endBar = function () { if (!barDrag) return; barDrag = null; aff.classList.remove('is-dragging'); hold(); };
+      sbar.addEventListener('pointerup', endBar);
+      sbar.addEventListener('pointercancel', endBar);
+      sbar.addEventListener('keydown', function (e) {
+        var k = e.key, s = step();
+        if (k === 'ArrowRight' || k === 'ArrowDown') scroller.scrollBy({ left: s, behavior: 'smooth' });
+        else if (k === 'ArrowLeft' || k === 'ArrowUp') scroller.scrollBy({ left: -s, behavior: 'smooth' });
+        else if (k === 'Home') scroller.scrollTo({ left: 0, behavior: 'smooth' });
+        else if (k === 'End') scroller.scrollTo({ left: maxScroll(), behavior: 'smooth' });
+        else return;
+        e.preventDefault(); hold();
+      });
+    }
+
+    // Desktop: drag the tiles with the mouse (touch already scrolls natively)
+    var tileDrag = null, suppressClick = false;
+    scroller.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      tileDrag = { x: e.clientX, left: scroller.scrollLeft, moved: false, id: e.pointerId };
     });
-    window.addEventListener('resize', function () { go(aIdx); });
-    go(0); start();
+    scroller.addEventListener('pointermove', function (e) {
+      if (!tileDrag) return;
+      var dx = e.clientX - tileDrag.x;
+      if (!tileDrag.moved && Math.abs(dx) > 6) {
+        tileDrag.moved = true;
+        scroller.setPointerCapture(tileDrag.id);
+        aff.classList.add('is-dragging');
+      }
+      if (tileDrag.moved) { scroller.scrollLeft = tileDrag.left - dx; hold(); }
+    });
+    var endTile = function () {
+      if (!tileDrag) return;
+      if (tileDrag.moved) {
+        suppressClick = true;
+        setTimeout(function () { suppressClick = false; }, 0);
+        aff.classList.remove('is-dragging');
+        // settle onto the nearest tile
+        var s = step();
+        scroller.scrollTo({ left: Math.round(scroller.scrollLeft / s) * s, behavior: 'smooth' });
+      }
+      tileDrag = null;
+    };
+    scroller.addEventListener('pointerup', endTile);
+    scroller.addEventListener('pointercancel', endTile);
+    scroller.addEventListener('click', function (e) { if (suppressClick) { e.preventDefault(); e.stopPropagation(); } }, true);
+    scroller.addEventListener('dragstart', function (e) { e.preventDefault(); }); // stop the browser dragging images/links
+
+    // Pause auto-scroll while people are looking or touching
+    aff.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') pointerInside = true; });
+    aff.addEventListener('pointerleave', function () { pointerInside = false; });
+    scroller.addEventListener('touchstart', function () { hold(); }, { passive: true });
+    scroller.addEventListener('wheel', function () { hold(); }, { passive: true });
+    aff.addEventListener('focusin', function () { hold(8000); });
+
+    if (!reduceMotion) {
+      autoTimer = setInterval(function () {
+        if (document.hidden || pointerInside || Date.now() < idleUntil || aff.classList.contains('is-dragging')) return;
+        var max = maxScroll();
+        if (max < 2) return;
+        if (scroller.scrollLeft >= max - 2) scroller.scrollTo({ left: 0, behavior: 'smooth' });
+        else scroller.scrollBy({ left: step(), behavior: 'smooth' });
+      }, 3000);
+    }
+    sync();
   }
 
   /* ---------- Journey stepper ---------- */
@@ -303,6 +375,118 @@
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
       reveals.forEach(function (el) { ro.observe(el); });
     }
+  }
+
+  /* ---------- Booking form ---------- */
+  var booking = $('[data-booking]');
+  if (booking) {
+    var endpoint = booking.getAttribute('data-endpoint') || '';
+    var toEmail = booking.getAttribute('data-email');
+    var alertBox = $('[data-form-alert]', booking);
+    var submitBtn = $('[data-submit]', booking);
+    var submitLabel = submitBtn ? $('span', submitBtn) : null;
+    var success = $('[data-booking-success]');
+    var checked = $$('input, select, textarea', booking).filter(function (el) {
+      return el.name && el.name.charAt(0) !== '_' && el.type !== 'hidden';
+    });
+    var tried = false;
+
+    function messageFor(el) {
+      var v = el.validity;
+      if (v.customError) return el.validationMessage;
+      if (v.valueMissing) return 'Please enter your ' + el.getAttribute('data-label').toLowerCase() + '.';
+      if (v.typeMismatch && el.type === 'email') return 'Enter an email address like name@example.com.';
+      if (v.patternMismatch) return el.getAttribute('data-pattern') || 'Please check this field.';
+      if (v.tooLong) return 'Please keep this under ' + el.maxLength + ' characters.';
+      return 'Please check this field.';
+    }
+    function validate(el) {
+      var ok = el.checkValidity();
+      var err = document.getElementById(el.id + '-error');
+      el.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (err) { err.textContent = ok ? '' : messageFor(el); err.hidden = ok; }
+      return ok;
+    }
+    checked.forEach(function (el) {
+      el.addEventListener('blur', function () { if (tried || el.value) validate(el); });
+      el.addEventListener('input', function () {
+        if (el.getAttribute('aria-invalid') === 'true') validate(el);
+      });
+    });
+
+    // Attachments: show what was picked and enforce the file count / size limits
+    var fileInput = booking.elements['attachments'];
+    if (fileInput) {
+      var drop = fileInput.parentNode;
+      var fileList = $('[data-file-list]', drop);
+      var emptyText = fileList.textContent;
+      var maxFiles = +fileInput.getAttribute('data-max-files') || 5;
+      var maxMb = +fileInput.getAttribute('data-max-mb') || 10;
+      var checkFiles = function () {
+        var picked = Array.prototype.slice.call(fileInput.files);
+        var total = picked.reduce(function (n, f) { return n + f.size; }, 0);
+        fileInput.setCustomValidity(
+          picked.length > maxFiles ? 'Please choose up to ' + maxFiles + ' files.' :
+          total > maxMb * 1024 * 1024 ? 'Please keep attachments under ' + maxMb + ' MB in total.' : '');
+        fileList.textContent = !picked.length ? emptyText :
+          picked.length === 1 ? picked[0].name :
+          picked.length + ' files: ' + picked.map(function (f) { return f.name; }).join(', ');
+        validate(fileInput);
+      };
+      fileInput.addEventListener('change', checkFiles);
+      ['dragenter', 'dragover'].forEach(function (t) { fileInput.addEventListener(t, function () { drop.classList.add('is-over'); }); });
+      ['dragleave', 'drop'].forEach(function (t) { fileInput.addEventListener(t, function () { drop.classList.remove('is-over'); }); });
+    }
+
+    function showAlert(html) { alertBox.innerHTML = html; alertBox.hidden = !html; }
+    function busy(on) {
+      if (!submitBtn) return;
+      submitBtn.disabled = on;
+      if (submitLabel) submitLabel.textContent = on ? 'Sending…' : 'Send request';
+    }
+    function finish(variant) {
+      booking.hidden = true;
+      $$('[data-variant]', success).forEach(function (v) { v.hidden = v.getAttribute('data-variant') !== variant; });
+      success.hidden = false;
+      success.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      success.focus({ preventScroll: true });
+    }
+    // Plain-text summary used for the email fallback
+    function summary() {
+      return checked.filter(function (el) { return el.type !== 'file' && el.value.trim(); })
+        .map(function (el) { return el.getAttribute('data-label') + ': ' + el.value.trim(); })
+        .join('\n');
+    }
+
+    booking.addEventListener('submit', function (e) {
+      e.preventDefault();
+      tried = true;
+      var gotcha = booking.elements['_gotcha'];
+      if (gotcha && gotcha.value) { finish('sent'); return; } // likely a bot
+      var bad = checked.filter(function (el) { return !validate(el); });
+      if (bad.length) {
+        showAlert(bad.length === 1 ? 'Please check the highlighted field.' : 'Please check the ' + bad.length + ' highlighted fields.');
+        bad[0].focus();
+        return;
+      }
+      showAlert('');
+      if (!endpoint) {
+        var name = (booking.elements['first-name'].value + ' ' + booking.elements['last-name'].value).trim();
+        var subject = booking.elements['subject'].value.trim();
+        window.location.href = 'mailto:' + toEmail + '?subject=' + encodeURIComponent(subject + ' (' + name + ')') +
+          '&body=' + encodeURIComponent('Hello,\n\nI would like to request an appointment with Dr Fan.\n\n' + summary() + '\n');
+        finish('email');
+        return;
+      }
+      busy(true);
+      fetch(endpoint, { method: 'POST', body: new FormData(booking), headers: { Accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); finish('sent'); })
+        .catch(function () {
+          busy(false);
+          showAlert('Sorry, your request couldn’t be sent. Please call <a href="tel:1300038398">1300 038 398</a> or email <a href="mailto:' + toEmail + '">' + toEmail + '</a>.');
+          alertBox.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+        });
+    });
   }
 
   /* ---------- Footer year ---------- */

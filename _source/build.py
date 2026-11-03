@@ -12,6 +12,10 @@ BASE_URL = "https://www.drfan.com.au/"
 PHONE = "1300 038 398"
 PHONE_TEL = "1300038398"
 EMAIL = "admin@drfan.com.au"
+# Booking form delivery. Leave empty and "Send request" opens the visitor's email app with the
+# request filled in (works on any host). To receive submissions directly, create a form at a service
+# such as Formspree and paste its endpoint here, e.g. "https://formspree.io/f/abcdwxyz", then rebuild.
+FORM_ENDPOINT = ""
 
 # ---------------------------------------------------------------- icons
 def icon(name, size=None):
@@ -28,6 +32,8 @@ def icon(name, size=None):
         "external": '<path d="M7 17L17 7M9 7h8v8"/>',
         "mail": '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
         "pin": '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+        "check": '<path d="M5 12.5l4.5 4.5L19 7"/>',
+        "clip": '<path d="M20 11.5l-8 8a5 5 0 0 1-7-7l8.5-8.5a3.5 3.5 0 0 1 5 5L10 17.5a2 2 0 0 1-3-3L14.5 7"/>',
     }
     s = f' width="{size}" height="{size}"' if size else ""
     return (f'<svg{s} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
@@ -148,7 +154,7 @@ def header(active=""):
 </nav>
 <div class="header-actions">
 <a class="header-phone" href="{tel(PHONE)}" aria-label="Call {PHONE}">{icon("phone")}<span>{PHONE}</span></a>
-<a class="btn btn--primary" href="#book">Book a consultation</a>
+<a class="btn btn--primary" href="book.html">Book a consultation</a>
 <a class="header-call" href="{tel(PHONE)}" aria-label="Call {PHONE}">{icon("phone")}</a>
 <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span class="icon-open">{icon("menu")}</span><span class="icon-close">{icon("close")}</span></button>
 </div>
@@ -159,7 +165,7 @@ def header(active=""):
 {mobile_groups}
 <a href="index.html#about">About Dr Fan</a>
 <a href="contact.html">Contact Us</a>
-<a class="btn btn--primary" href="#book">Book a consultation</a>
+<a class="btn btn--primary" href="book.html">Book a consultation</a>
 </nav>
 """
 
@@ -193,7 +199,7 @@ def footer():
 </footer>
 <div class="action-bar" aria-label="Quick actions">
 <a href="{tel(PHONE)}">{icon("phone")}Call</a>
-<a href="#book">Book a consultation</a>
+<a href="book.html">Book a consultation</a>
 </div>
 <script src="assets/js/main.js" defer></script>
 </body>
@@ -433,7 +439,7 @@ def home():
 <button type="button" class="bio-toggle" data-bio-toggle aria-expanded="false" aria-controls="bio-more"><span>Read full biography</span>{icon("down")}</button>
 </div>
 <div class="cta-cards reveal" style="--d:.18s">
-<a class="cta-card cta-card--primary" href="#book"><span class="cta-card__text"><span class="cta-card__title">Book a consultation</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
+<a class="cta-card cta-card--primary" href="book.html"><span class="cta-card__text"><span class="cta-card__title">Book a consultation</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
 <a class="cta-card cta-card--outline" href="mailto:{EMAIL}?subject=GP%20referral"><span class="cta-card__text"><span class="cta-card__title">Send a GP referral</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
 </div>
 </div>
@@ -455,6 +461,22 @@ def home():
 </div>
 </section>
 
+<section class="affiliations" data-aff aria-labelledby="aff-title">
+<div class="container">
+<div class="section-head section-head--row reveal">
+<div><h2 class="eyebrow" id="aff-title">Affiliations</h2></div>
+</div>
+<div class="aff-viewport" id="aff-viewport" role="region" aria-label="Affiliations, scrolls sideways" tabindex="0">
+<div class="aff-track">
+{aff_html}
+</div>
+</div>
+<div class="aff-scrollbar" role="scrollbar" aria-controls="aff-viewport" aria-orientation="horizontal" aria-label="Scroll affiliations" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+<span class="aff-scrollbar__thumb"></span>
+</div>
+</div>
+</section>
+
 <section class="mv" aria-label="Mission and vision">
 <div class="container mv__grid">
 <div class="mv-card mv-card--light reveal"><p class="eyebrow">My Mission</p><p class="mv-card__statement">Improving your health</p></div>
@@ -470,24 +492,6 @@ def home():
 </div>
 <div class="proc-grid">{proc_html}</div>
 <p class="proc-more reveal">…and more</p>
-</div>
-</section>
-
-<section class="affiliations" data-aff aria-labelledby="aff-title">
-<div class="container">
-<div class="section-head section-head--row reveal">
-<div><p class="eyebrow">Affiliations</p><h2 class="section-title" id="aff-title">Colleges, societies, universities and hospitals</h2></div>
-<div class="carousel-nav">
-<button type="button" class="icon-btn icon-btn--lg" data-aff-prev aria-label="Previous affiliations">{icon("left")}</button>
-<button type="button" class="icon-btn icon-btn--lg icon-btn--dark" data-aff-next aria-label="Next affiliations">{icon("right")}</button>
-</div>
-</div>
-<div class="aff-viewport" role="region" aria-roledescription="carousel" aria-label="Affiliations">
-<div class="aff-track">
-{aff_html}
-</div>
-</div>
-<div class="progress" aria-hidden="true"><div class="progress__bar"></div></div>
 </div>
 </section>
 
@@ -831,8 +835,91 @@ def other_resources():
     html += book_band() + "</main>\n" + footer()
     write("other-resources.html", html)
 
+# ================================================================ BOOKING
+def form_field(fid, label, type_="text", required=False, autocomplete=None, full=False, hint=None, attrs=""):
+    """One labelled input with hint and error slots wired up for screen readers."""
+    described = " ".join(x for x in (f"{fid}-hint" if hint else "", f"{fid}-error") if x)
+    marker = '<span class="field__req" aria-hidden="true">*</span>' if required else '<span class="field__opt">Optional</span>'
+    control = (f'<textarea class="input" id="{fid}" name="{fid}" rows="5" data-label="{escape(label)}" aria-describedby="{described}"{" required" if required else ""}{attrs}></textarea>'
+               if type_ == "textarea" else
+               f'<input class="input" type="{type_}" id="{fid}" name="{fid}" data-label="{escape(label)}" aria-describedby="{described}"'
+               f'{f" autocomplete={chr(34)}{autocomplete}{chr(34)}" if autocomplete else ""}{" required" if required else ""}{attrs}>')
+    return f"""<div class="field{' field--full' if full else ''}">
+<label class="field__label" for="{fid}">{escape(label)} {marker}</label>
+{control}
+{f'<p class="field__hint" id="{fid}-hint">{hint}</p>' if hint else ''}
+<p class="field__error" id="{fid}-error" hidden></p>
+</div>"""
+
+def book_page():
+    endpoint_attr = f' data-endpoint="{escape(FORM_ENDPOINT)}"' if FORM_ENDPOINT else ""
+
+    html = head("Book a consultation", "Request an appointment with Dr Howard Fan, general surgeon, in Sydney’s south, Griffith or by telehealth.", "book.html")
+    html += header("book.html") + '<main id="main">\n'
+    html += page_hero("Patients", "Book a consultation",
+                      "Send us your details and we’ll contact you to confirm a time and location.",
+                      [("Book a consultation", None)])
+    html += f"""<section class="section booking"><div class="container booking__grid">
+<div class="booking__main">
+<form class="form-card reveal" data-booking data-email="{EMAIL}"{endpoint_attr} novalidate>
+<div class="form-alert" data-form-alert role="alert" hidden></div>
+<input type="hidden" name="_subject" value="Appointment request (website)">
+<div class="hp" aria-hidden="true"><label for="_gotcha">Leave this empty</label><input type="text" id="_gotcha" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+<div class="form-grid">
+{form_field("first-name", "First name", required=True, autocomplete="given-name")}
+{form_field("last-name", "Last name", required=True, autocomplete="family-name")}
+{form_field("phone", "Phone number", "tel", required=True, autocomplete="tel", attrs=' inputmode="tel" pattern="[0-9 +\\(\\)\\-]{8,}" data-pattern="Enter a phone number we can call you on."')}
+{form_field("email", "Email address", "email", required=True, autocomplete="email")}
+{form_field("subject", "Subject", required=True, full=True, attrs=' maxlength="150"')}
+{form_field("details", "Details", "textarea", required=True, full=True, attrs=' maxlength="1000"')}
+<div class="field field--full">
+<label class="field__label" for="attachments">Attachments <span class="field__opt">Optional</span></label>
+<div class="file-drop">
+<input class="file-drop__input" type="file" id="attachments" name="attachments" multiple accept=".pdf,.jpg,.jpeg,.png,.heic,.doc,.docx" data-label="Attachments" data-max-files="5" data-max-mb="10" aria-describedby="attachments-hint attachments-error">
+<span class="file-drop__icon">{icon("clip")}</span>
+<span class="file-drop__text"><strong data-file-list>Choose files or drag them here</strong><span>Such as your GP referral</span></span>
+</div>
+<p class="field__hint" id="attachments-hint">PDF, Word or image files. Up to 5 files, 10 MB in total.</p>
+<p class="field__error" id="attachments-error" hidden></p>
+</div>
+</div>
+<div class="form-actions">
+<button type="submit" class="btn btn--primary btn--lg" data-submit><span>Send request</span>{icon("arrow")}</button>
+</div>
+</form>
+
+<div class="form-card form-success" data-booking-success tabindex="-1" hidden>
+<span class="form-success__icon">{icon("check")}</span>
+<div data-variant="sent" hidden>
+<h2>Thanks, we’ve received your request</h2>
+<p>We’ll be in touch to confirm a time and location. If it’s urgent, call <a href="{tel(PHONE)}">{PHONE}</a>.</p>
+</div>
+<div data-variant="email" hidden>
+<h2>Almost done: press Send in your email</h2>
+<p>Your email app should have opened with your request filled in. Press Send to get it to us. If nothing opened, email <a href="mailto:{EMAIL}">{EMAIL}</a> or call <a href="{tel(PHONE)}">{PHONE}</a>.</p>
+</div>
+<div class="book-card__actions"><a class="btn btn--outline" href="index.html">Back to the homepage</a></div>
+</div>
+</div>
+
+<aside class="booking__aside" aria-label="Other ways to book">
+<div class="book-card book-card--dark reveal">
+<span class="book-card__kicker">Prefer to call?</span>
+<h3>Speak with our team</h3>
+<p>Call to book, or email your GP referral and we’ll contact you to arrange an appointment.</p>
+<div class="book-card__actions">
+<a class="btn btn--white" href="{tel(PHONE)}">{icon("phone", 18)} {PHONE}</a>
+<a class="btn btn--ghost-light" href="mailto:{EMAIL}">Email</a>
+</div>
+</div>
+</aside>
+</div></section>
+"""
+    html += "</main>\n" + footer()
+    write("book.html", html)
+
 def extras():
-    pages = ["", "laparoscopy.html", "endoscopy.html", "minor-operations.html", "operation-risks.html",
+    pages = ["", "book.html", "laparoscopy.html", "endoscopy.html", "minor-operations.html", "operation-risks.html",
              "post-operative-instructions.html", "faqs.html", "contact.html", "useful-links.html", "other-resources.html"]
     urls = "".join(f"<url><loc>{BASE_URL}{p}</loc></url>" for p in pages)
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
@@ -844,4 +931,4 @@ def extras():
     write("404.html", four)
 
 if __name__ == "__main__":
-    home(); laparoscopy(); endoscopy(); minor_ops(); risks(); postop(); faqs_page(); contact(); useful_links(); other_resources(); extras()
+    home(); book_page(); laparoscopy(); endoscopy(); minor_ops(); risks(); postop(); faqs_page(); contact(); useful_links(); other_resources(); extras()
