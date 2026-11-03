@@ -1,4 +1,4 @@
-/* Dr Howard Fan — site behaviour. No dependencies. */
+/* Dr Howard Fan: site behaviour. No dependencies. */
 (function () {
   'use strict';
   var doc = document.documentElement;
@@ -79,9 +79,10 @@
     var slides = $$('.update', updates);
     var dots = $$('.dot', updates);
     var counter = $('[data-updates-count]', updates);
-    var pauseBtn = $('[data-updates-pause]', updates);
     var index = 0;
-    var userPaused = reduceMotion;
+    // Rotation is driven by the progress-bar animation, which reduced-motion CSS
+    // shortens to ~0ms, so auto-rotation stays off for those visitors.
+    var autoplay = !reduceMotion;
     var hoverPaused = false;
 
     function show(i) {
@@ -102,20 +103,17 @@
       if (counter) counter.textContent = String(index + 1).padStart(2, '0');
     }
     function syncPlayState() {
-      var paused = userPaused || hoverPaused;
-      updates.classList.toggle('is-playing', !userPaused);
-      updates.classList.toggle('is-paused', paused);
-      if (pauseBtn) pauseBtn.setAttribute('aria-label', userPaused ? 'Play updates' : 'Pause updates');
+      updates.classList.toggle('is-playing', autoplay);
+      updates.classList.toggle('is-paused', hoverPaused);
     }
     dots.forEach(function (d, n) {
       d.addEventListener('click', function () { show(n); });
       var fill = $('.dot__fill', d);
-      if (fill) fill.addEventListener('animationend', function () { if (d.classList.contains('is-active') && !userPaused) show(index + 1); });
+      if (fill) fill.addEventListener('animationend', function () { if (d.classList.contains('is-active') && autoplay) show(index + 1); });
     });
     var prev = $('[data-updates-prev]', updates), next = $('[data-updates-next]', updates);
     if (prev) prev.addEventListener('click', function () { show(index - 1); });
     if (next) next.addEventListener('click', function () { show(index + 1); });
-    if (pauseBtn) pauseBtn.addEventListener('click', function () { userPaused = !userPaused; syncPlayState(); });
     updates.addEventListener('mouseenter', function () { hoverPaused = true; syncPlayState(); });
     updates.addEventListener('mouseleave', function () { hoverPaused = false; syncPlayState(); });
     updates.addEventListener('focusin', function () { hoverPaused = true; syncPlayState(); });

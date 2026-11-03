@@ -33,8 +33,6 @@ def icon(name, size=None):
     return (f'<svg{s} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
             f'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">{paths[name]}</svg>')
 
-PLAY = '<svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="14" height="14"><path d="M7 4.5v15l12.5-7.5z"/></svg>'
-PAUSE = '<svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" width="14" height="14"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>'
 
 # ---------------------------------------------------------------- navigation
 NAV_GROUPS = [
@@ -298,7 +296,7 @@ def write(path, html):
 # ================================================================ HOME
 def home():
     updates = [
-        ("No-gap gastroscopy &amp; colonoscopy", f'Now accepting direct referrals for suitable patients — ask your GP to email a referral to <a href="mailto:{EMAIL}">{EMAIL}</a>.'),
+        ("No-gap gastroscopy &amp; colonoscopy", f'Now accepting direct referrals for suitable patients. Ask your GP to email a referral to <a href="mailto:{EMAIL}">{EMAIL}</a>.'),
         ("Telehealth appointments", "Telehealth appointments are available for suitable consultations, to save you time and travel."),
         ("Nine locations across Sydney’s south and Griffith", "Rooms at Kogarah, Caringbah, Hurstville, Miranda, Woolooware and Cronulla, plus Griffith in the Riverina."),
     ]
@@ -310,7 +308,7 @@ def home():
     procs = [
         ("Endoscopy", "Gastroscopy", "A camera examination of the oesophagus, stomach and upper small bowel. A day procedure under light sedation.", "endoscopy.html"),
         ("Endoscopy", "Colonoscopy", "A camera examination of the large bowel. A day procedure under light sedation, with bowel preparation beforehand.", "endoscopy.html#bowel-prep"),
-        ("Keyhole", "Laparoscopic surgery", "Surgery through small incisions with a camera and fine instruments — less scarring, less pain and a shorter stay.", "laparoscopy.html"),
+        ("Keyhole", "Laparoscopic surgery", "Surgery through small incisions with a camera and fine instruments, which means less scarring, less pain and a shorter stay.", "laparoscopy.html"),
         ("Keyhole", "Gallbladder surgery", "Keyhole removal of the gallbladder, usually recommended when gallstones are causing symptoms.", "post-operative-instructions.html#gallbladder"),
         ("Keyhole", "Hernia surgery", "Repair of groin and abdominal wall hernias. Hernias don’t heal on their own and tend to grow over time.", "post-operative-instructions.html#hernia"),
         ("Keyhole", "Anti-reflux surgery", "Surgery for reflux when lifestyle measures and medication are not controlling symptoms.", "post-operative-instructions.html#reflux"),
@@ -319,7 +317,6 @@ def home():
         ("Skin", "Skin cancer surgery", "Excision of skin cancers and other lesions, with reconstruction techniques designed to optimise the cosmetic outcome.", "minor-operations.html"),
     ]
     proc_html = "".join(f"""<article class="proc-card reveal" style="--d:{(i % 3) * 0.06:.2f}s">
-<div class="proc-card__top"><span class="proc-card__num">{i+1:02d}</span><span class="tag">{cat}</span></div>
 <h3>{escape(name)}</h3>
 <p>{escape(desc)}</p>
 <a class="text-link" href="{href}">Learn more<span class="sr-only"> about {escape(name.lower())}</span>{icon("arrow")}</a>
@@ -349,9 +346,9 @@ def home():
         ("Consultation", "Unhurried, honest advice", "Dr Fan explains your diagnosis, outlines all appropriate management options and answers your questions thoroughly. When surgery isn’t the best option, you’ll get honest guidance on the alternatives.",
          ["Telehealth appointments available to save you time", "You may also meet the anaesthetist and, where needed, allied health staff"]),
         ("Preparing", "Getting ready for your procedure", "You’ll receive individual instructions. As a general guide:",
-         ["Some medications may need to be paused — including blood thinners, antiplatelets, diabetes and blood pressure medications, and some supplements", "Follow the fasting instructions you’re given before surgery", "Colonoscopy: avoid nuts, seeds, grains and leafy vegetables for 3 days, clear fluids the day before, and bowel preparation the night before"]),
+         ["Some medications may need to be paused, including blood thinners, antiplatelets, diabetes and blood pressure medications, and some supplements", "Follow the fasting instructions you’re given before surgery", "Colonoscopy: avoid nuts, seeds, grains and leafy vegetables for 3 days, clear fluids the day before, and bowel preparation the night before"]),
         ("Procedure day", "On the day", "Gastroscopy and colonoscopy are day procedures under light sedation. After keyhole surgery, most patients go home the same day or the next.",
-         ["No driving for 24 hours after an anaesthetic — arrange a lift home", "Simple pain relief such as paracetamol or ibuprofen is usually enough at home"]),
+         ["No driving for 24 hours after an anaesthetic, so arrange a lift home", "Simple pain relief such as paracetamol or ibuprofen is usually enough at home"]),
         ("Recovery", "Recovery and follow-up", "Most people return to light activities within a few days. After keyhole surgery:",
          ["Keep dressings on for one week, and don’t soak wounds for two weeks", "No heavy lifting (over 5 kg) or strenuous activity for six weeks", "A follow-up appointment at 2–4 weeks to check wounds and review results"]),
     ]
@@ -420,8 +417,8 @@ def home():
 <button type="button" class="bio-toggle" data-bio-toggle aria-expanded="false" aria-controls="bio-more"><span>Read full biography</span>{icon("down")}</button>
 </div>
 <div class="cta-cards reveal" style="--d:.18s">
-<a class="cta-card cta-card--primary" href="#book"><span class="cta-card__text"><span class="cta-card__title">Book a consultation</span><span class="cta-card__sub">Patients · {PHONE}</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
-<a class="cta-card cta-card--outline" href="mailto:{EMAIL}?subject=GP%20referral"><span class="cta-card__text"><span class="cta-card__title">Send a GP referral</span><span class="cta-card__sub">{EMAIL}</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
+<a class="cta-card cta-card--primary" href="#book"><span class="cta-card__text"><span class="cta-card__title">Book a consultation</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
+<a class="cta-card cta-card--outline" href="mailto:{EMAIL}?subject=GP%20referral"><span class="cta-card__text"><span class="cta-card__title">Send a GP referral</span></span><span class="cta-card__arrow">{icon("arrow")}</span></a>
 </div>
 </div>
 <div class="portrait reveal" style="--d:.1s">
@@ -436,7 +433,6 @@ def home():
 <div class="updates__viewport" aria-live="polite">{upd_html}</div>
 <div class="updates__controls">
 <div class="dots">{dots}</div>
-<button type="button" class="icon-btn" data-updates-pause aria-label="Pause updates">{PAUSE}{PLAY}</button>
 <button type="button" class="icon-btn" data-updates-prev aria-label="Previous update">{icon("left")}</button>
 <button type="button" class="icon-btn icon-btn--solid" data-updates-next aria-label="Next update">{icon("right")}</button>
 </div>
@@ -454,9 +450,10 @@ def home():
 <div class="container">
 <div class="section-head reveal">
 <p class="eyebrow">Procedures</p>
-<h2 class="section-title" id="proc-title">Care for the oesophagus, stomach, gallbladder, bowel, hernias and skin.</h2>
+<h2 class="section-title" id="proc-title">Specialty Services Offered</h2>
 </div>
 <div class="proc-grid">{proc_html}</div>
+<p class="proc-more reveal">…and more</p>
 </div>
 </section>
 
@@ -493,7 +490,7 @@ def home():
 <div class="step-panel-wrap reveal">
 {step_panels}
 <div class="step-foot">
-<p>General information only — your own instructions may differ. See <a href="operation-risks.html">operation risks</a> and <a href="post-operative-instructions.html">post-operative instructions</a>.</p>
+<p>General information only. Your own instructions may differ. See <a href="operation-risks.html">operation risks</a> and <a href="post-operative-instructions.html">post-operative instructions</a>.</p>
 <div class="carousel-nav">
 <button type="button" class="icon-btn" data-step-prev aria-label="Previous step">{icon("left")}</button>
 <button type="button" class="icon-btn icon-btn--solid" data-step-next aria-label="Next step">{icon("right")}</button>
@@ -601,7 +598,7 @@ def laparoscopy():
     ]
     inner("laparoscopy.html", "Laparoscopy",
           "Laparoscopy (key-hole surgery) with Dr Howard Fan: what it is, how to prepare, and post operative instructions.",
-          "Procedures", "Key-hole surgery — what it involves, how to prepare, and what to do afterwards.",
+          "Procedures", "Key-hole surgery: what it involves, how to prepare, and what to do afterwards.",
           [("Procedures", None), ("Laparoscopy", None)], sections,
           related_cards=[("Patient information", "Operation Risks", "Risks of laparoscopy and general anaesthetic, explained.", "operation-risks.html#laparoscopy"),
                          ("Patient information", "Post Operative Instructions", "Specific instructions for gallbladder, hernia and reflux surgery.", "post-operative-instructions.html#keyhole"),
@@ -826,7 +823,7 @@ def extras():
     write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {BASE_URL}sitemap.xml\n")
     four = head("Page not found", "The page you were looking for could not be found.", "404.html") + header() + f"""<main id="main">
-{page_hero("404", "Page not found", "Sorry — that page doesn’t exist or has moved. Try one of the links below.", [("Page not found", None)])}
+{page_hero("404", "Page not found", "Sorry, that page doesn’t exist or has moved. Try one of the links below.", [("Page not found", None)])}
 <section class="section"><div class="container"><div class="book-card__actions"><a class="btn btn--primary" href="index.html">Go to the homepage</a><a class="btn btn--outline" href="contact.html">Contact Us</a></div></div></section>
 """ + book_band() + "</main>\n" + footer()
     write("404.html", four)
